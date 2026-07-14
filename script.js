@@ -26,7 +26,7 @@ const NIGHTS = [
   {
     id: "night2",
     label: "N2 · Jul 18",
-    venue: "Hokkaido",
+    venue: "Sapporo, Hokkaido",
     matches: [
       { block: "A", a: "Konosuke Takeshita", b: "Jake Lee",       winner: null },
       { block: "A", a: "Hirooki Goto",       b: "Yota Tsuji",      winner: null },
@@ -34,6 +34,203 @@ const NIGHTS = [
       { block: "A", a: "Great-O-Khan",       b: "SANADA",          winner: null },
       { block: "A", a: "Shingo Takagi",      b: "Ryohei Oiwa",     winner: null },
       { block: "B", a: "Gabe Kidd",          b: "Drilla Moloney",  winner: null },
+    ]
+  },
+  {
+    id: "night3",
+    label: "N3 · Jul 19",
+    venue: "Sapporo, Hokkaido",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Aaron Wolf",      winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "Zack Sabre Jr",   winner: null },
+      { block: "B", a: "HENARE",          b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Callum Newman",   b: "Ren Narita",      winner: null },
+      { block: "B", a: "Gabe Kidd",       b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night4",
+    label: "N4 · Jul 21",
+    venue: "Sendai, Miyagi",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "Yuto-Ice",      winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Jake Lee",       winner: null },
+      { block: "A", a: "Boltin Oleg",        b: "Shingo Takagi",  winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "SANADA",         winner: null },
+      { block: "A", a: "Great-O-Khan",       b: "Ryohei Oiwa",    winner: null },
+    ]
+  },
+  {
+    id: "night5",
+    label: "N5 · Jul 22",
+    venue: "Nagaoka",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Ren Narita",      winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "Callum Newman",   winner: null },
+      { block: "B", a: "Aaron Wolf",      b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "HENARE",          b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night6",
+    label: "N6 · Jul 25",
+    venue: "Ota City Gymnasium, Tokyo",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "Boltin Oleg",    winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Great-O-Khan",   winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Shingo Takagi",  winner: null },
+      { block: "A", a: "Jake Lee",           b: "SANADA",         winner: null },
+      { block: "A", a: "Yuto-Ice",           b: "Ryohei Oiwa",    winner: null },
+    ]
+  },
+  {
+    id: "night7",
+    label: "N7 · Jul 26",
+    venue: "Ebara Wave Arena, Ota, Tokyo",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Yuya Uemura",     winner: null },
+      { block: "B", a: "Callum Newman",   b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "HENARE",          b: "Ren Narita",      winner: null },
+      { block: "B", a: "Aaron Wolf",      b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night8",
+    label: "N8 · Jul 29",
+    venue: "Yamato University Arena, Osaka",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "Great-O-Khan",   winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Shingo Takagi",  winner: null },
+      { block: "A", a: "Boltin Oleg",        b: "Jake Lee",       winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Yuto-Ice",       winner: null },
+      { block: "A", a: "SANADA",             b: "Ryohei Oiwa",    winner: null },
+    ]
+  },
+  {
+    id: "night9",
+    label: "N9 · Jul 31",
+    venue: "Takamatsu City Gymnasium, Kagawa",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "HENARE",          winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "Aaron Wolf",      winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "Ren Narita",      winner: null },
+      { block: "B", a: "Callum Newman",   b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "Drilla Moloney",  b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night10",
+    label: "N10 · Aug 1",
+    venue: "Sun Plaza Hall, Hiroshima",
+    matches: [
+      { block: "A", a: "Hirooki Goto",       b: "Konosuke Takeshita", winner: null },
+      { block: "A", a: "Boltin Oleg",        b: "SANADA",             winner: null },
+      { block: "A", a: "Shingo Takagi",      b: "Great-O-Khan",       winner: null },
+      { block: "A", a: "Yuto-Ice",           b: "Jake Lee",           winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Ryohei Oiwa",        winner: null },
+    ]
+  },
+  {
+    id: "night11",
+    label: "N11 · Aug 2",
+    venue: "Japan Tour",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Callum Newman",   winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "Ren Narita",      winner: null },
+      { block: "B", a: "Gabe Kidd",       b: "HENARE",          winner: null },
+      { block: "B", a: "Aaron Wolf",      b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night12",
+    label: "N12 · Aug 6",
+    venue: "Japan Tour",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "Shingo Takagi",  winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Boltin Oleg",    winner: null },
+      { block: "A", a: "Jake Lee",           b: "Great-O-Khan",   winner: null },
+      { block: "A", a: "Yuto-Ice",           b: "SANADA",         winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Ryohei Oiwa",    winner: null },
+    ]
+  },
+  {
+    id: "night13",
+    label: "N13 · Aug 8",
+    venue: "Yokohama Budokan, Kanagawa",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "HENARE",          winner: null },
+      { block: "B", a: "Drilla Moloney",  b: "Zack Sabre Jr",   winner: null },
+      { block: "B", a: "Aaron Wolf",      b: "Ren Narita",      winner: null },
+      { block: "B", a: "OSKAR",           b: "Callum Newman",   winner: null },
+    ]
+  },
+  {
+    id: "night14",
+    label: "N14 · Aug 9",
+    venue: "G Messe Gunma",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "SANADA",         winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Boltin Oleg",    winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Great-O-Khan",   winner: null },
+      { block: "A", a: "Shingo Takagi",      b: "Yuto-Ice",       winner: null },
+      { block: "A", a: "Jake Lee",           b: "Ryohei Oiwa",    winner: null },
+    ]
+  },
+  {
+    id: "night15",
+    label: "N15 · Aug 11",
+    venue: "Nissho Highway Arena, Mie",
+    matches: [
+      { block: "B", a: "Yuya Uemura",     b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "Drilla Moloney",  b: "Ren Narita",      winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "HENARE",          winner: null },
+      { block: "B", a: "Aaron Wolf",      b: "Callum Newman",   winner: null },
+      { block: "B", a: "Shota Umino",     b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night16",
+    label: "N16 · Aug 12",
+    venue: "Act City Hamamatsu, Shizuoka",
+    matches: [
+      { block: "A", a: "Hirooki Goto",       b: "Yuto-Ice",        winner: null },
+      { block: "A", a: "Boltin Oleg",        b: "Great-O-Khan",    winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Jake Lee",        winner: null },
+      { block: "A", a: "Shingo Takagi",      b: "SANADA",          winner: null },
+      { block: "A", a: "Konosuke Takeshita", b: "Ryohei Oiwa",     winner: null },
+    ]
+  },
+  {
+    id: "night17",
+    label: "N17 · Aug 13",
+    venue: "Korakuen Hall, Tokyo",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Callum Newman",   b: "HENARE",          winner: null },
+      { block: "B", a: "Gabe Kidd",       b: "Ren Narita",      winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "Aaron Wolf",      winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night18",
+    label: "N18 · Aug 15",
+    venue: "Ryōgoku Sumo Hall, Tokyo",
+    matches: [
+      { block: "SF", a: "A Block winner", b: "B Block runner-up", winner: null },
+      { block: "SF", a: "B Block winner", b: "A Block runner-up", winner: null },
+    ]
+  },
+  {
+    id: "night19",
+    label: "N19 · Aug 16 — FINAL",
+    venue: "Ryōgoku Sumo Hall, Tokyo",
+    matches: [
+      { block: "F", a: "Semifinal 1 winner", b: "Semifinal 2 winner", winner: null },
     ]
   },
 ];
@@ -154,8 +351,8 @@ function renderCards(){
     card.className = "match-ticket";
 
     const badge = document.createElement("span");
-    badge.className = "ticket-block " + m.block.toLowerCase();
-    badge.textContent = `BLOCK ${m.block}`;
+    badge.className = "ticket-block " + (m.block === "SF" || m.block === "F" ? "final" : m.block.toLowerCase());
+    badge.textContent = m.block === "SF" ? "SEMIFINAL" : m.block === "F" ? "FINAL" : `BLOCK ${m.block}`;
     card.appendChild(badge);
 
     const bout = document.createElement("div");
