@@ -387,6 +387,16 @@ main{ max-width: 1080px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
    TOP RATED
    ============================================ */
 .stars-intro{ color: var(--paper-dim); font-size: 0.85rem; max-width: 46ch; margin-bottom: 1.25rem; }
+.stars-heading{
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
+  color: var(--paper-dim);
+  margin: 1.75rem 0 0.7rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--line);
+}
+.stars-heading:first-of-type{ margin-top: 0; }
 .star-leaderboard{ display: flex; flex-direction: column; gap: 0.6rem; }
 .leader-row{
   display: flex; align-items: center; gap: 0.8rem;
