@@ -395,17 +395,39 @@ function renderNightPicker(){
 function starRow(id, avg){
   const row = document.createElement("div");
   row.className = "rate-row";
-  for(let i=1; i<=5; i++){
-    const btn = document.createElement("button");
-    btn.className = "star-btn" + (avg && i <= Math.round(avg) ? " filled" : "");
-    btn.textContent = "★";
-    btn.title = `Rate ${i} star${i>1?"s":""}`;
-    btn.onclick = () => rateMatch(id, i);
-    row.appendChild(btn);
-  }
+
+  const display = document.createElement("div");
+  display.className = "star-display";
+  const pct = avg ? (avg / 5) * 100 : 0;
+  display.innerHTML = `
+    <span class="star-back">★★★★★</span>
+    <span class="star-front" style="width:${pct}%">★★★★★</span>
+  `;
+
   const label = document.createElement("span");
   label.className = "rate-avg";
-  label.textContent = avg ? `${avg.toFixed(1)}★ (you)` : "rate it";
+  label.textContent = avg ? `${avg.toFixed(2)}★ (you)` : "rate it";
+
+  const slider = document.createElement("input");
+  slider.type = "range";
+  slider.className = "rate-slider";
+  slider.min = "0";
+  slider.max = "5";
+  slider.step = "0.25";
+  slider.value = avg || 0;
+  slider.title = "Drag to rate — quarter-star precision";
+
+  slider.addEventListener("input", () => {
+    const val = parseFloat(slider.value);
+    display.querySelector(".star-front").style.width = `${(val / 5) * 100}%`;
+    label.textContent = `${val.toFixed(2)}★`;
+  });
+  slider.addEventListener("change", () => {
+    rateMatch(id, parseFloat(slider.value));
+  });
+
+  row.appendChild(display);
+  row.appendChild(slider);
   row.appendChild(label);
   return row;
 }
@@ -493,7 +515,7 @@ function renderStars(){
       <span class="leader-rank">${i+1}</span>
       <span class="leader-bout">${e.a} vs ${e.b}</span>
       <span class="leader-meta">${e.night}</span>
-      <span class="leader-avg">${e.avg.toFixed(1)}★</span>
+      <span class="leader-avg">${e.avg.toFixed(2)}★</span>
     `;
     wrap.appendChild(row);
   });
