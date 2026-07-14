@@ -279,34 +279,78 @@ function avatarDataUri(name, block){
 }
 
 /* ============================================
-   RATINGS (stored in this browser only)
+   RATINGS — shared across everyone, stored in a
+   real database via /api/rate and /api/ratings.
+   The only thing kept locally is an anonymous
+   "voter ID" (so a refresh doesn't double-count
+   a rating) and a copy of *your own* last pick
+   per match, purely for the slider's starting
+   position and the "(your pick)" label.
    ============================================ */
-const RATINGS_KEY = "g1-tracker-ratings";
+const VOTER_KEY = "g1-tracker-voter-id";
+function getVoterId(){
+  let id = localStorage.getItem(VOTER_KEY);
+  if(!id){
+    id = "v-" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem(VOTER_KEY, id);
+  }
+  return id;
+}
 
-function loadRatings(){
+const MY_RATINGS_KEY = "g1-tracker-my-ratings";
+function getMyRating(id){
   try{
-    return JSON.parse(localStorage.getItem(RATINGS_KEY)) || {};
-  }catch(e){ return {}; }
+    const all = JSON.parse(localStorage.getItem(MY_RATINGS_KEY)) || {};
+    return all[id] ?? null;
+  }catch(e){ return null; }
 }
-function saveRatings(ratings){
-  localStorage.setItem(RATINGS_KEY, JSON.stringify(ratings));
+function setMyRating(id, stars){
+  try{
+    const all = JSON.parse(localStorage.getItem(MY_RATINGS_KEY)) || {};
+    all[id] = stars;
+    localStorage.setItem(MY_RATINGS_KEY, JSON.stringify(all));
+  }catch(e){}
 }
-let ratings = loadRatings();
 
 function matchId(nightId, index){ return `${nightId}-m${index}`; }
 
-function rateMatch(id, stars){
-  ratings[id] = ratings[id] || [];
-  // one rating per browser: overwrite the last one instead of stacking
-  ratings[id] = [stars];
-  saveRatings(ratings);
+let ratingsCache = {}; // { matchId: { avg, count } }, populated from the server
+
+async function loadRatingsFromServer(){
+  try{
+    const res = await fetch("/api/ratings");
+    if(!res.ok) throw new Error("bad response");
+    ratingsCache = await res.json();
+  }catch(e){
+    console.error("Couldn't load ratings from server:", e);
+  }
   render();
 }
 
+async function rateMatch(id, stars){
+  setMyRating(id, stars);
+  // optimistic bump so the UI feels instant while the request is in flight
+  ratingsCache[id] = ratingsCache[id] || { avg: stars, count: 1 };
+  render();
+  try{
+    const res = await fetch("/api/rate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ matchId: id, voterId: getVoterId(), stars }),
+    });
+    if(!res.ok) throw new Error("bad response");
+    ratingsCache[id] = await res.json(); // { avg, count } straight from the server
+    render();
+  }catch(e){
+    console.error("Couldn't save rating:", e);
+  }
+}
+
 function avgRating(id){
-  const arr = ratings[id];
-  if(!arr || !arr.length) return null;
-  return arr.reduce((a,b)=>a+b,0) / arr.length;
+  return ratingsCache[id]?.avg ?? null;
+}
+function ratingCount(id){
+  return ratingsCache[id]?.count ?? 0;
 }
 
 /* ============================================
@@ -404,9 +448,20 @@ function starRow(id, avg){
     <span class="star-front" style="width:${pct}%">★★★★★</span>
   `;
 
+  const count = ratingCount(id);
+  const mine = getMyRating(id);
+
   const label = document.createElement("span");
   label.className = "rate-avg";
-  label.textContent = avg ? `${avg.toFixed(2)}★ (you)` : "rate it";
+  if(avg && mine !== null){
+    label.textContent = `${avg.toFixed(2)}★ · ${count} vote${count === 1 ? "" : "s"} · you: ${mine.toFixed(2)}★`;
+  } else if(avg){
+    label.textContent = `${avg.toFixed(2)}★ · ${count} vote${count === 1 ? "" : "s"}`;
+  } else if(mine !== null){
+    label.textContent = `you: ${mine.toFixed(2)}★ · waiting on others`;
+  } else {
+    label.textContent = "be the first to rate it";
+  }
 
   const slider = document.createElement("input");
   slider.type = "range";
@@ -414,13 +469,13 @@ function starRow(id, avg){
   slider.min = "0";
   slider.max = "5";
   slider.step = "0.25";
-  slider.value = avg || 0;
+  slider.value = mine ?? avg ?? 0;
   slider.title = "Drag to rate — quarter-star precision";
 
   slider.addEventListener("input", () => {
     const val = parseFloat(slider.value);
     display.querySelector(".star-front").style.width = `${(val / 5) * 100}%`;
-    label.textContent = `${val.toFixed(2)}★`;
+    label.textContent = `${val.toFixed(2)}★ (your pick)`;
   });
   slider.addEventListener("change", () => {
     rateMatch(id, parseFloat(slider.value));
@@ -499,7 +554,7 @@ function renderStars(){
     night.matches.forEach((m, i) => {
       const id = matchId(night.id, i);
       const avg = avgRating(id);
-      if(avg) entries.push({ id, a:m.a, b:m.b, night: night.label, avg });
+      if(avg) entries.push({ id, a:m.a, b:m.b, night: night.label, avg, count: ratingCount(id) });
     });
   });
   entries.sort((x,y) => y.avg - x.avg);
@@ -514,8 +569,38 @@ function renderStars(){
     row.innerHTML = `
       <span class="leader-rank">${i+1}</span>
       <span class="leader-bout">${e.a} vs ${e.b}</span>
-      <span class="leader-meta">${e.night}</span>
+      <span class="leader-meta">${e.night} &middot; ${e.count} vote${e.count === 1 ? "" : "s"}</span>
       <span class="leader-avg">${e.avg.toFixed(2)}★</span>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+function renderMyStars(){
+  const wrap = document.getElementById("myLeaderboard");
+  wrap.innerHTML = "";
+  const entries = [];
+  NIGHTS.forEach(night => {
+    night.matches.forEach((m, i) => {
+      const id = matchId(night.id, i);
+      const mine = getMyRating(id);
+      if(mine !== null) entries.push({ id, a:m.a, b:m.b, night: night.label, mine });
+    });
+  });
+  entries.sort((x,y) => y.mine - x.mine);
+
+  if(!entries.length){
+    wrap.innerHTML = `<div class="empty-state">You haven't rated anything yet — go star some matches on the CARDS tab.</div>`;
+    return;
+  }
+  entries.forEach((e, i) => {
+    const row = document.createElement("div");
+    row.className = "leader-row";
+    row.innerHTML = `
+      <span class="leader-rank">${i+1}</span>
+      <span class="leader-bout">${e.a} vs ${e.b}</span>
+      <span class="leader-meta">${e.night}</span>
+      <span class="leader-avg">${e.mine.toFixed(2)}★</span>
     `;
     wrap.appendChild(row);
   });
@@ -528,6 +613,7 @@ function render(){
   renderStandingsTable("A", "#blockA");
   renderStandingsTable("B", "#blockB");
   renderStars();
+  renderMyStars();
 }
 
 document.querySelectorAll(".tab").forEach(tab => {
@@ -573,3 +659,4 @@ function updateNextCard(){
 render();
 updateNextCard();
 setInterval(updateNextCard, 1000);
+loadRatingsFromServer();
