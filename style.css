@@ -35,12 +35,12 @@ body{
   height: 6px;
   background: repeating-linear-gradient(
     -45deg,
-    var(--vermillion) 0 14px,
-    var(--sumi) 14px 16px,
-    var(--flash) 16px 30px,
-    var(--sumi) 30px 32px,
-    var(--cyan) 32px 46px,
-    var(--sumi) 40px 48px
+    var(--vermillion) 0 16px,
+    var(--sumi) 16px 18px,
+    var(--flash) 18px 20px,
+    var(--sumi) 20px 22px,
+    var(--cyan) 22px 38px,
+    var(--sumi) 38px 40px
   );
 }
 
@@ -80,8 +80,8 @@ body{
 .event-mark{
   position: relative;
   flex-shrink: 0;
-  width: 180px; height: 180px;
-  margin-left: -90px;
+  width: 60px; height: 60px;
+  margin-left: -10px;
   display: flex; align-items: center; justify-content: center;
 }
 .event-logo{
@@ -244,7 +244,31 @@ main{ max-width: 1080px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
   align-items: center;
   gap: 0.6rem;
 }
-.wrestler{ font-family: var(--font-display); font-size: 1.25rem; line-height: 1.05; letter-spacing: 0.01em; }
+.wrestler-wrap{
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  min-height: 2.2rem;
+  display: flex;
+  align-items: center;
+}
+.wrestler-wrap.left{ justify-content: flex-end; }
+.wrestler-wrap.right{ justify-content: flex-start; }
+
+.wrestler-photo{
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 48px;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.wrestler-wrap.left .wrestler-photo{ left: 0; transform: translateX(-14px); mask-image: linear-gradient(to right, black 60%, transparent); }
+.wrestler-wrap.right .wrestler-photo{ right: 0; transform: translateX(14px); mask-image: linear-gradient(to left, black 60%, transparent); }
+.wrestler-wrap:hover .wrestler-photo{ opacity: 0.9; transform: translateX(0); }
+
+.wrestler{ font-family: var(--font-display); font-size: 1.25rem; line-height: 1.05; letter-spacing: 0.01em; position: relative; z-index: 1; padding: 0.1rem 0.3rem; }
 .wrestler.left{ text-align: right; }
 .wrestler.right{ text-align: left; }
 .wrestler.winner{ color: var(--gold); }
