@@ -9,6 +9,7 @@
 const NIGHTS = [
   {
     id: "night1",
+    date: "2026-07-11T23:00:00Z",
     label: "N1 · Jul 11",
     venue: "Hoffman Estates, IL",
     matches: [
@@ -25,6 +26,7 @@ const NIGHTS = [
   },
   {
     id: "night2",
+    date: "2026-07-18T09:00:00Z",
     label: "N2 · Jul 18",
     venue: "Sapporo, Hokkaido",
     matches: [
@@ -38,6 +40,7 @@ const NIGHTS = [
   },
   {
     id: "night3",
+    date: "2026-07-19T09:00:00Z",
     label: "N3 · Jul 19",
     venue: "Sapporo, Hokkaido",
     matches: [
@@ -50,6 +53,7 @@ const NIGHTS = [
   },
   {
     id: "night4",
+    date: "2026-07-21T09:00:00Z",
     label: "N4 · Jul 21",
     venue: "Sendai, Miyagi",
     matches: [
@@ -62,6 +66,7 @@ const NIGHTS = [
   },
   {
     id: "night5",
+    date: "2026-07-22T09:00:00Z",
     label: "N5 · Jul 22",
     venue: "Nagaoka",
     matches: [
@@ -74,6 +79,7 @@ const NIGHTS = [
   },
   {
     id: "night6",
+    date: "2026-07-25T09:00:00Z",
     label: "N6 · Jul 25",
     venue: "Ota City Gymnasium, Tokyo",
     matches: [
@@ -86,6 +92,7 @@ const NIGHTS = [
   },
   {
     id: "night7",
+    date: "2026-07-26T09:00:00Z",
     label: "N7 · Jul 26",
     venue: "Ebara Wave Arena, Ota, Tokyo",
     matches: [
@@ -98,6 +105,7 @@ const NIGHTS = [
   },
   {
     id: "night8",
+    date: "2026-07-29T09:00:00Z",
     label: "N8 · Jul 29",
     venue: "Yamato University Arena, Osaka",
     matches: [
@@ -110,6 +118,7 @@ const NIGHTS = [
   },
   {
     id: "night9",
+    date: "2026-07-31T09:00:00Z",
     label: "N9 · Jul 31",
     venue: "Takamatsu City Gymnasium, Kagawa",
     matches: [
@@ -122,6 +131,7 @@ const NIGHTS = [
   },
   {
     id: "night10",
+    date: "2026-08-01T09:00:00Z",
     label: "N10 · Aug 1",
     venue: "Sun Plaza Hall, Hiroshima",
     matches: [
@@ -134,6 +144,7 @@ const NIGHTS = [
   },
   {
     id: "night11",
+    date: "2026-08-02T09:00:00Z",
     label: "N11 · Aug 2",
     venue: "Japan Tour",
     matches: [
@@ -146,6 +157,7 @@ const NIGHTS = [
   },
   {
     id: "night12",
+    date: "2026-08-06T09:00:00Z",
     label: "N12 · Aug 6",
     venue: "Japan Tour",
     matches: [
@@ -158,6 +170,7 @@ const NIGHTS = [
   },
   {
     id: "night13",
+    date: "2026-08-08T09:00:00Z",
     label: "N13 · Aug 8",
     venue: "Yokohama Budokan, Kanagawa",
     matches: [
@@ -170,6 +183,7 @@ const NIGHTS = [
   },
   {
     id: "night14",
+    date: "2026-08-09T09:00:00Z",
     label: "N14 · Aug 9",
     venue: "G Messe Gunma",
     matches: [
@@ -182,6 +196,7 @@ const NIGHTS = [
   },
   {
     id: "night15",
+    date: "2026-08-11T09:00:00Z",
     label: "N15 · Aug 11",
     venue: "Nissho Highway Arena, Mie",
     matches: [
@@ -194,6 +209,7 @@ const NIGHTS = [
   },
   {
     id: "night16",
+    date: "2026-08-12T09:00:00Z",
     label: "N16 · Aug 12",
     venue: "Act City Hamamatsu, Shizuoka",
     matches: [
@@ -206,6 +222,7 @@ const NIGHTS = [
   },
   {
     id: "night17",
+    date: "2026-08-13T09:00:00Z",
     label: "N17 · Aug 13",
     venue: "Korakuen Hall, Tokyo",
     matches: [
@@ -218,6 +235,7 @@ const NIGHTS = [
   },
   {
     id: "night18",
+    date: "2026-08-15T08:00:00Z",
     label: "N18 · Aug 15",
     venue: "Ryōgoku Sumo Hall, Tokyo",
     matches: [
@@ -227,6 +245,7 @@ const NIGHTS = [
   },
   {
     id: "night19",
+    date: "2026-08-16T08:00:00Z",
     label: "N19 · Aug 16 — FINAL",
     venue: "Ryōgoku Sumo Hall, Tokyo",
     matches: [
@@ -496,4 +515,39 @@ document.querySelectorAll(".tab").forEach(tab => {
   });
 });
 
+/* ============================================
+   NEXT CARD COUNTDOWN
+   ============================================ */
+function formatCountdown(ms){
+  if(ms <= 0) return "LIVE NOW";
+  const totalSec = Math.floor(ms / 1000);
+  const days = Math.floor(totalSec / 86400);
+  const hours = Math.floor((totalSec % 86400) / 3600);
+  const mins = Math.floor((totalSec % 3600) / 60);
+  const secs = totalSec % 60;
+  return `${days}d ${hours}h ${mins}m ${secs}s`;
+}
+
+function updateNextCard(){
+  const labelEl = document.getElementById("nextCardLabel");
+  const cdEl = document.getElementById("nextCardCountdown");
+  if(!labelEl || !cdEl) return;
+
+  const now = new Date();
+  const next = NIGHTS.find(n => n.date && new Date(n.date) > now);
+
+  if(!next){
+    labelEl.textContent = "Tournament complete";
+    cdEl.textContent = "";
+    return;
+  }
+
+  const nightNum = next.id.replace("night", "");
+  const dateText = next.label.split(" · ")[1] || next.label;
+  labelEl.textContent = `Night ${nightNum} · ${dateText}`;
+  cdEl.textContent = formatCountdown(new Date(next.date) - now);
+}
+
 render();
+updateNextCard();
+setInterval(updateNextCard, 1000);
