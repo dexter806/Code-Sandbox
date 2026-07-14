@@ -90,6 +90,13 @@ body{
   filter: drop-shadow(0 4px 14px rgba(0,0,0,0.5));
 }
 
+@media (max-width: 640px){
+  .event-mark{
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .eyebrow{
   font-family: var(--font-mono);
   font-size: 0.65rem;
