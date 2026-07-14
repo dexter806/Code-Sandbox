@@ -1,381 +1,457 @@
 /* ============================================
-   TOKENS
+   DATA
+   Fill in future nights the same way — each match
+   needs a block, two wrestlers, and (once it happens)
+   a winner. Leave winner as null for matches that
+   haven't happened yet; they'll show as "TBD".
    ============================================ */
-:root{
-  --sumi:        #0B0A0D;
-  --sumi-raised: #17151A;
-  --paper:       #EDE7DA;
-  --paper-dim:   #948e82;
-  --vermillion:  #E31C5F;
-  --vermillion-deep: #A8113F;
-  --cyan:        #22C7E5;
-  --flash:       #E8FF29;
-  --gold:        #E8FF29;
-  --line:        rgba(237,231,218,0.14);
-  --line-strong: rgba(237,231,218,0.28);
 
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-body:    'Inter', sans-serif;
-  --font-mono:    'JetBrains Mono', monospace;
-}
+const NIGHTS = [
+  {
+    id: "night1",
+    label: "N1 · Jul 11",
+    venue: "Hoffman Estates, IL",
+    matches: [
+      { block: "B", a: "Aaron Wolf",        b: "HENARE",           winner: "Aaron Wolf",        method: "Inverted Olympic Slam", time: "9:00" },
+      { block: "A", a: "Shingo Takagi",     b: "Jake Lee",         winner: "Jake Lee",           method: "Facebreak Shot",        time: "10:14" },
+      { block: "B", a: "OSKAR",             b: "Ren Narita",       winner: "OSKAR",              method: "Sleeper Hold",          time: "9:43" },
+      { block: "A", a: "Yuto-Ice",          b: "Great-O-Khan",     winner: "Yuto-Ice",           method: "Running Knee Strike",   time: "11:11" },
+      { block: "B", a: "Shota Umino",       b: "Zack Sabre Jr",    winner: "Zack Sabre Jr",      method: "Zack Driver",           time: "16:10" },
+      { block: "A", a: "Hirooki Goto",      b: "SANADA",           winner: "Hirooki Goto",       method: "GTR",                   time: "12:04" },
+      { block: "B", a: "Yuya Uemura",       b: "Callum Newman",    winner: "Callum Newman",      method: "Make Way",              time: "15:42" },
+      { block: "A", a: "Boltin Oleg",       b: "Ryohei Oiwa",      winner: "Ryohei Oiwa",        method: "Ark Hold (submission)", time: "13:28" },
+      { block: "A", a: "Konosuke Takeshita",b: "Yota Tsuji",       winner: "Yota Tsuji",         method: "Fire Blaster",          time: "20:52" },
+    ]
+  },
+  {
+    id: "night2",
+    label: "N2 · Jul 18",
+    venue: "Sapporo, Hokkaido",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "Jake Lee",       winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Yota Tsuji",      winner: null },
+      { block: "A", a: "Boltin Oleg",        b: "Yuto-Ice",        winner: null },
+      { block: "A", a: "Great-O-Khan",       b: "SANADA",          winner: null },
+      { block: "A", a: "Shingo Takagi",      b: "Ryohei Oiwa",     winner: null },
+      { block: "B", a: "Gabe Kidd",          b: "Drilla Moloney",  winner: null },
+    ]
+  },
+  {
+    id: "night3",
+    label: "N3 · Jul 19",
+    venue: "Sapporo, Hokkaido",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Aaron Wolf",      winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "Zack Sabre Jr",   winner: null },
+      { block: "B", a: "HENARE",          b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Callum Newman",   b: "Ren Narita",      winner: null },
+      { block: "B", a: "Gabe Kidd",       b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night4",
+    label: "N4 · Jul 21",
+    venue: "Sendai, Miyagi",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "Yuto-Ice",      winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Jake Lee",       winner: null },
+      { block: "A", a: "Boltin Oleg",        b: "Shingo Takagi",  winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "SANADA",         winner: null },
+      { block: "A", a: "Great-O-Khan",       b: "Ryohei Oiwa",    winner: null },
+    ]
+  },
+  {
+    id: "night5",
+    label: "N5 · Jul 22",
+    venue: "Nagaoka",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Ren Narita",      winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "Callum Newman",   winner: null },
+      { block: "B", a: "Aaron Wolf",      b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "HENARE",          b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night6",
+    label: "N6 · Jul 25",
+    venue: "Ota City Gymnasium, Tokyo",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "Boltin Oleg",    winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Great-O-Khan",   winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Shingo Takagi",  winner: null },
+      { block: "A", a: "Jake Lee",           b: "SANADA",         winner: null },
+      { block: "A", a: "Yuto-Ice",           b: "Ryohei Oiwa",    winner: null },
+    ]
+  },
+  {
+    id: "night7",
+    label: "N7 · Jul 26",
+    venue: "Ebara Wave Arena, Ota, Tokyo",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Yuya Uemura",     winner: null },
+      { block: "B", a: "Callum Newman",   b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "HENARE",          b: "Ren Narita",      winner: null },
+      { block: "B", a: "Aaron Wolf",      b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night8",
+    label: "N8 · Jul 29",
+    venue: "Yamato University Arena, Osaka",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "Great-O-Khan",   winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Shingo Takagi",  winner: null },
+      { block: "A", a: "Boltin Oleg",        b: "Jake Lee",       winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Yuto-Ice",       winner: null },
+      { block: "A", a: "SANADA",             b: "Ryohei Oiwa",    winner: null },
+    ]
+  },
+  {
+    id: "night9",
+    label: "N9 · Jul 31",
+    venue: "Takamatsu City Gymnasium, Kagawa",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "HENARE",          winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "Aaron Wolf",      winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "Ren Narita",      winner: null },
+      { block: "B", a: "Callum Newman",   b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "Drilla Moloney",  b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night10",
+    label: "N10 · Aug 1",
+    venue: "Sun Plaza Hall, Hiroshima",
+    matches: [
+      { block: "A", a: "Hirooki Goto",       b: "Konosuke Takeshita", winner: null },
+      { block: "A", a: "Boltin Oleg",        b: "SANADA",             winner: null },
+      { block: "A", a: "Shingo Takagi",      b: "Great-O-Khan",       winner: null },
+      { block: "A", a: "Yuto-Ice",           b: "Jake Lee",           winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Ryohei Oiwa",        winner: null },
+    ]
+  },
+  {
+    id: "night11",
+    label: "N11 · Aug 2",
+    venue: "Japan Tour",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Callum Newman",   winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "Ren Narita",      winner: null },
+      { block: "B", a: "Gabe Kidd",       b: "HENARE",          winner: null },
+      { block: "B", a: "Aaron Wolf",      b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night12",
+    label: "N12 · Aug 6",
+    venue: "Japan Tour",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "Shingo Takagi",  winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Boltin Oleg",    winner: null },
+      { block: "A", a: "Jake Lee",           b: "Great-O-Khan",   winner: null },
+      { block: "A", a: "Yuto-Ice",           b: "SANADA",         winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Ryohei Oiwa",    winner: null },
+    ]
+  },
+  {
+    id: "night13",
+    label: "N13 · Aug 8",
+    venue: "Yokohama Budokan, Kanagawa",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "HENARE",          winner: null },
+      { block: "B", a: "Drilla Moloney",  b: "Zack Sabre Jr",   winner: null },
+      { block: "B", a: "Aaron Wolf",      b: "Ren Narita",      winner: null },
+      { block: "B", a: "OSKAR",           b: "Callum Newman",   winner: null },
+    ]
+  },
+  {
+    id: "night14",
+    label: "N14 · Aug 9",
+    venue: "G Messe Gunma",
+    matches: [
+      { block: "A", a: "Konosuke Takeshita", b: "SANADA",         winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Boltin Oleg",    winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Great-O-Khan",   winner: null },
+      { block: "A", a: "Shingo Takagi",      b: "Yuto-Ice",       winner: null },
+      { block: "A", a: "Jake Lee",           b: "Ryohei Oiwa",    winner: null },
+    ]
+  },
+  {
+    id: "night15",
+    label: "N15 · Aug 11",
+    venue: "Nissho Highway Arena, Mie",
+    matches: [
+      { block: "B", a: "Yuya Uemura",     b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "Drilla Moloney",  b: "Ren Narita",      winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "HENARE",          winner: null },
+      { block: "B", a: "Aaron Wolf",      b: "Callum Newman",   winner: null },
+      { block: "B", a: "Shota Umino",     b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night16",
+    label: "N16 · Aug 12",
+    venue: "Act City Hamamatsu, Shizuoka",
+    matches: [
+      { block: "A", a: "Hirooki Goto",       b: "Yuto-Ice",        winner: null },
+      { block: "A", a: "Boltin Oleg",        b: "Great-O-Khan",    winner: null },
+      { block: "A", a: "Yota Tsuji",         b: "Jake Lee",        winner: null },
+      { block: "A", a: "Shingo Takagi",      b: "SANADA",          winner: null },
+      { block: "A", a: "Konosuke Takeshita", b: "Ryohei Oiwa",     winner: null },
+    ]
+  },
+  {
+    id: "night17",
+    label: "N17 · Aug 13",
+    venue: "Korakuen Hall, Tokyo",
+    matches: [
+      { block: "B", a: "Shota Umino",     b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Callum Newman",   b: "HENARE",          winner: null },
+      { block: "B", a: "Gabe Kidd",       b: "Ren Narita",      winner: null },
+      { block: "B", a: "Zack Sabre Jr",   b: "Aaron Wolf",      winner: null },
+      { block: "B", a: "Yuya Uemura",     b: "OSKAR",           winner: null },
+    ]
+  },
+  {
+    id: "night18",
+    label: "N18 · Aug 15",
+    venue: "Ryōgoku Sumo Hall, Tokyo",
+    matches: [
+      { block: "SF", a: "A Block winner", b: "B Block runner-up", winner: null },
+      { block: "SF", a: "B Block winner", b: "A Block runner-up", winner: null },
+    ]
+  },
+  {
+    id: "night19",
+    label: "N19 · Aug 16 — FINAL",
+    venue: "Ryōgoku Sumo Hall, Tokyo",
+    matches: [
+      { block: "F", a: "Semifinal 1 winner", b: "Semifinal 2 winner", winner: null },
+    ]
+  },
+];
 
-*{ box-sizing:border-box; }
-html,body{ margin:0; padding:0; }
-body{
-  background: var(--sumi);
-  color: var(--paper);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
+const BLOCK_A = ["Konosuke Takeshita","Yota Tsuji","Hirooki Goto","SANADA","Shingo Takagi","Jake Lee","Yuto-Ice","Great-O-Khan","Boltin Oleg","Ryohei Oiwa"];
+const BLOCK_B = ["Zack Sabre Jr","Shota Umino","Yuya Uemura","Callum Newman","Aaron Wolf","HENARE","Ren Narita","OSKAR","Gabe Kidd","Drilla Moloney"];
+
+/* Turns "Konosuke Takeshita" into "konosuke-takeshita" so it matches
+   the photo filename we look for in images/wrestlers/ */
+function slug(name){
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
 /* ============================================
-   BRAND STRIPE — hazard-diagonal band, poster-style
+   RATINGS (stored in this browser only)
    ============================================ */
-.brand-stripe{
-  height: 6px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--vermillion) 0 16px,
-    var(--sumi) 16px 18px,
-    var(--flash) 18px 20px,
-    var(--sumi) 20px 22px,
-    var(--cyan) 22px 38px,
-    var(--sumi) 38px 40px
-  );
+const RATINGS_KEY = "g1-tracker-ratings";
+
+function loadRatings(){
+  try{
+    return JSON.parse(localStorage.getItem(RATINGS_KEY)) || {};
+  }catch(e){ return {}; }
+}
+function saveRatings(ratings){
+  localStorage.setItem(RATINGS_KEY, JSON.stringify(ratings));
+}
+let ratings = loadRatings();
+
+function matchId(nightId, index){ return `${nightId}-m${index}`; }
+
+function rateMatch(id, stars){
+  ratings[id] = ratings[id] || [];
+  // one rating per browser: overwrite the last one instead of stacking
+  ratings[id] = [stars];
+  saveRatings(ratings);
+  render();
 }
 
-/* ============================================
-   MASTHEAD
-   ============================================ */
-.masthead{
-  position: relative;
-  background:
-    radial-gradient(ellipse 120% 100% at 50% -20%, rgba(225,65,39,0.28), transparent 60%),
-    var(--sumi);
-  border-bottom: 1px solid var(--line-strong);
-  padding: 2.75rem 1.5rem 2.1rem;
-  overflow: hidden;
-}
-.masthead::after{
-  /* faint grain / halftone texture for a printed-poster feel */
-  content:"";
-  position: absolute; inset: 0;
-  background-image: radial-gradient(rgba(237,231,218,0.05) 1px, transparent 1px);
-  background-size: 4px 4px;
-  pointer-events: none;
-}
-.masthead-inner{
-  position: relative;
-  max-width: 1080px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 1.9rem;
-  flex-wrap: wrap;
-}
-
-/* Original G1-style mark: bold wordmark on a diagonal-cut red plate,
-   with the tournament number in a broken ring — evokes the tournament's
-   own bold red/black poster energy without copying the real logotype. */
-.event-mark{
-  position: relative;
-  flex-shrink: 0;
-  width: 60px; height: 60px;
-  margin-left: -10px;
-  display: flex; align-items: center; justify-content: center;
-}
-.event-logo{
-  width: 100%; height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 14px rgba(0,0,0,0.5));
-}
-
-.eyebrow{
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
-  color: var(--gold);
-  margin: 0 0 0.3rem;
-  text-transform: uppercase;
-}
-.masthead-text h1{
-  font-family: var(--font-display);
-  font-size: clamp(2.6rem, 6vw, 4.2rem);
-  letter-spacing: 0.01em;
-  margin: 0;
-  line-height: 0.9;
-}
-.masthead-text .dot{ color: var(--vermillion); }
-.masthead-sub{
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--paper-dim);
-  margin: 0.35rem 0 0;
-  letter-spacing: 0.02em;
-}
-
-.masthead-meta{
-  margin-left: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-}
-.meta-row{ display:flex; gap: 0.6rem; justify-content: flex-end; color: var(--paper-dim); }
-.meta-row strong{ color: var(--paper); font-weight: 600; }
-
-/* ============================================
-   TABS
-   ============================================ */
-.tabs{
-  max-width: 1080px;
-  margin: 0 auto;
-  display: flex;
-  gap: 0;
-  padding: 0 1.5rem;
-  border-bottom: 1px solid var(--line);
-}
-.tab{
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  background: none;
-  border: none;
-  color: var(--paper-dim);
-  padding: 1rem 1.1rem;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
-}
-.tab:hover{ color: var(--paper); }
-.tab.active{ color: var(--vermillion); border-bottom-color: var(--vermillion); }
-
-main{ max-width: 1080px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
-.view{ display: none; }
-.view.active{ display: block; }
-
-/* ============================================
-   NIGHT PICKER
-   ============================================ */
-.night-picker{
-  display: flex;
-  gap: 0.6rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-.night-chip{
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  white-space: nowrap;
-  background: var(--sumi-raised);
-  border: 1px solid var(--line);
-  color: var(--paper-dim);
-  padding: 0.55rem 0.9rem;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-.night-chip:hover{ border-color: var(--line-strong); color: var(--paper); }
-.night-chip.active{ background: var(--vermillion); border-color: var(--vermillion); color: var(--paper); }
-
-/* ============================================
-   MATCH CARDS (ticket-stub signature element)
-   ============================================ */
-.card-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.1rem;
-}
-.match-ticket{
-  position: relative;
-  background: var(--sumi-raised);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 1.1rem 1.2rem 1rem;
-  background-image:
-    repeating-linear-gradient(to bottom, transparent 0 7px, rgba(237,231,218,0.05) 7px 8px);
-  background-size: 100% 100%;
-  overflow: hidden;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-.match-ticket:hover{
-  border-color: rgba(225,65,39,0.45);
-  box-shadow: 0 0 0 1px rgba(225,65,39,0.15), 0 8px 24px rgba(0,0,0,0.35);
-}
-.match-ticket::before{
-  /* perforation notch */
-  content:"";
-  position: absolute;
-  top: 50%; left: -9px;
-  width: 18px; height: 18px;
-  background: var(--sumi);
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  transform: translateY(-50%);
-}
-.match-ticket::after{
-  content:"";
-  position: absolute;
-  top: 50%; right: -9px;
-  width: 18px; height: 18px;
-  background: var(--sumi);
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  transform: translateY(-50%);
-}
-.ticket-block{
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  margin-bottom: 0.7rem;
-}
-.ticket-block.a{ background: rgba(227,28,95,0.18); color: #ff6b9a; }
-.ticket-block.b{ background: rgba(34,199,229,0.18); color: #7fe3f5; }
-.ticket-block.final{ background: rgba(232,255,41,0.16); color: var(--flash); }
-
-.bout{
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 0.6rem;
-}
-.wrestler-wrap{
-  position: relative;
-  overflow: hidden;
-  border-radius: 6px;
-  min-height: 2.2rem;
-  display: flex;
-  align-items: center;
-}
-.wrestler-wrap.left{ justify-content: flex-end; }
-.wrestler-wrap.right{ justify-content: flex-start; }
-
-.wrestler-photo{
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 48px;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  pointer-events: none;
-}
-.wrestler-wrap.left .wrestler-photo{ left: 0; transform: translateX(-14px); mask-image: linear-gradient(to right, black 60%, transparent); }
-.wrestler-wrap.right .wrestler-photo{ right: 0; transform: translateX(14px); mask-image: linear-gradient(to left, black 60%, transparent); }
-.wrestler-wrap:hover .wrestler-photo{ opacity: 0.9; transform: translateX(0); }
-
-.wrestler{ font-family: var(--font-display); font-size: 1.25rem; line-height: 1.05; letter-spacing: 0.01em; position: relative; z-index: 1; padding: 0.1rem 0.3rem; }
-.wrestler.left{ text-align: right; }
-.wrestler.right{ text-align: left; }
-.wrestler.winner{ color: var(--gold); }
-.vs{ font-family: var(--font-mono); font-size: 0.7rem; color: var(--paper-dim); }
-
-.result-line{
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--paper-dim);
-  text-align: center;
-  margin-top: 0.6rem;
-  padding-top: 0.6rem;
-  border-top: 1px dashed var(--line);
-}
-.result-line strong{ color: var(--gold); font-weight: 600; }
-.result-line.pending{ color: var(--paper-dim); font-style: italic; }
-
-/* star rating widget */
-.rate-row{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  margin-top: 0.65rem;
-}
-.star-btn{
-  background: none; border: none; cursor: pointer;
-  font-size: 1.1rem; line-height: 1;
-  color: var(--line-strong);
-  padding: 0.1rem;
-  transition: color 0.1s ease, transform 0.1s ease;
-}
-.star-btn:hover{ transform: scale(1.15); }
-.star-btn.filled{ color: var(--gold); }
-.rate-avg{
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--paper-dim);
-  margin-left: 0.4rem;
+function avgRating(id){
+  const arr = ratings[id];
+  if(!arr || !arr.length) return null;
+  return arr.reduce((a,b)=>a+b,0) / arr.length;
 }
 
 /* ============================================
    STANDINGS
    ============================================ */
-.standings-wrap{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-@media (max-width: 700px){ .standings-wrap{ grid-template-columns: 1fr; } }
+function computeStandings(block){
+  const names = block === "A" ? BLOCK_A : BLOCK_B;
+  const table = {};
+  names.forEach(n => table[n] = { name:n, w:0, l:0, d:0, pts:0 });
 
-.block-title{
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  letter-spacing: 0.03em;
-  margin: 0 0 0.6rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px solid var(--line);
-}
-.block-title.block-a{ border-bottom-color: var(--vermillion); color: #ff6b9a; }
-.block-title.block-b{ border-bottom-color: var(--cyan); color: #7fe3f5; }
+  NIGHTS.forEach(night => {
+    night.matches.forEach(m => {
+      if(m.block !== block || !m.winner) return;
+      if(m.winner === "DRAW"){
+        table[m.a].d++; table[m.b].d++;
+        table[m.a].pts++; table[m.b].pts++;
+      } else {
+        const loser = m.winner === m.a ? m.b : m.a;
+        table[m.winner].w++; table[m.winner].pts += 2;
+        table[loser].l++;
+      }
+    });
+  });
 
-.block-table table{ width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.82rem; }
-.block-table th{
-  text-align: center;
-  color: var(--paper-dim);
-  font-weight: 500;
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
-  padding: 0.4rem 0.3rem;
-  border-bottom: 1px solid var(--line);
+  return Object.values(table).sort((x,y) => y.pts - x.pts);
 }
-.block-table th.col-name{ text-align: left; }
-.block-table td{ text-align: center; padding: 0.5rem 0.3rem; border-bottom: 1px solid var(--line); }
-.block-table td.col-name{ text-align: left; font-family: var(--font-body); font-weight: 600; }
-.block-table tr:first-child td{ background: rgba(201,162,39,0.08); }
-.block-table td.pts{ color: var(--gold); font-weight: 700; }
-.rank-num{ display:inline-block; width:1.4em; color: var(--paper-dim); }
 
 /* ============================================
-   TOP RATED
+   RENDERING
    ============================================ */
-.stars-intro{ color: var(--paper-dim); font-size: 0.85rem; max-width: 46ch; margin-bottom: 1.25rem; }
-.star-leaderboard{ display: flex; flex-direction: column; gap: 0.6rem; }
-.leader-row{
-  display: flex; align-items: center; gap: 0.8rem;
-  background: var(--sumi-raised);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.7rem 1rem;
-}
-.leader-rank{ font-family: var(--font-display); font-size: 1.3rem; color: var(--paper-dim); width: 1.6em; }
-.leader-bout{ flex: 1; font-weight: 600; font-size: 0.9rem; }
-.leader-meta{ font-family: var(--font-mono); font-size: 0.65rem; color: var(--paper-dim); }
-.leader-avg{ font-family: var(--font-mono); color: var(--gold); font-weight: 700; }
-.empty-state{ color: var(--paper-dim); font-family: var(--font-mono); font-size: 0.82rem; padding: 2rem 0; text-align: center; }
+let activeView = "nights";
+let activeNight = NIGHTS[0].id;
 
-/* ============================================
-   FOOTER
-   ============================================ */
-.site-footer{
-  border-top: 1px solid var(--line);
-  padding: 1.5rem;
-  text-align: center;
+function renderTabs(){
+  document.querySelectorAll(".tab").forEach(t => {
+    t.classList.toggle("active", t.dataset.view === activeView);
+  });
+  document.querySelectorAll(".view").forEach(v => {
+    v.classList.toggle("active", v.id === `view-${activeView}`);
+  });
 }
-.site-footer p{ font-family: var(--font-mono); font-size: 0.68rem; color: var(--paper-dim); max-width: 50ch; margin: 0 auto; }
 
-@media (prefers-reduced-motion: reduce){
-  .star-btn{ transition: none; }
+function renderNightPicker(){
+  const wrap = document.getElementById("nightPicker");
+  wrap.innerHTML = "";
+  NIGHTS.forEach(n => {
+    const chip = document.createElement("button");
+    chip.className = "night-chip" + (n.id === activeNight ? " active" : "");
+    chip.textContent = n.label;
+    chip.onclick = () => { activeNight = n.id; render(); };
+    wrap.appendChild(chip);
+  });
 }
+
+function starRow(id, avg){
+  const row = document.createElement("div");
+  row.className = "rate-row";
+  for(let i=1; i<=5; i++){
+    const btn = document.createElement("button");
+    btn.className = "star-btn" + (avg && i <= Math.round(avg) ? " filled" : "");
+    btn.textContent = "★";
+    btn.title = `Rate ${i} star${i>1?"s":""}`;
+    btn.onclick = () => rateMatch(id, i);
+    row.appendChild(btn);
+  }
+  const label = document.createElement("span");
+  label.className = "rate-avg";
+  label.textContent = avg ? `${avg.toFixed(1)}★ (you)` : "rate it";
+  row.appendChild(label);
+  return row;
+}
+
+function renderCards(){
+  const grid = document.getElementById("cardGrid");
+  grid.innerHTML = "";
+  const night = NIGHTS.find(n => n.id === activeNight);
+  night.matches.forEach((m, i) => {
+    const id = matchId(night.id, i);
+    const avg = avgRating(id);
+
+    const card = document.createElement("div");
+    card.className = "match-ticket";
+
+    const badge = document.createElement("span");
+    badge.className = "ticket-block " + (m.block === "SF" || m.block === "F" ? "final" : m.block.toLowerCase());
+    badge.textContent = m.block === "SF" ? "SEMIFINAL" : m.block === "F" ? "FINAL" : `BLOCK ${m.block}`;
+    card.appendChild(badge);
+
+    const bout = document.createElement("div");
+    bout.className = "bout";
+    bout.innerHTML = `
+      <div class="wrestler-wrap left">
+        <img class="wrestler-photo" src="images/wrestlers/${slug(m.a)}.jpg" alt="" onerror="this.style.display='none'">
+        <div class="wrestler left ${m.winner===m.a ? 'winner':''}">${m.a}</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="wrestler-wrap right">
+        <img class="wrestler-photo" src="images/wrestlers/${slug(m.b)}.jpg" alt="" onerror="this.style.display='none'">
+        <div class="wrestler right ${m.winner===m.b ? 'winner':''}">${m.b}</div>
+      </div>
+    `;
+    card.appendChild(bout);
+
+    const result = document.createElement("div");
+    if(m.winner){
+      result.className = "result-line";
+      result.innerHTML = `<strong>${m.winner}</strong> wins${m.method ? ` — ${m.method}` : ""}${m.time ? ` (${m.time})` : ""}`;
+    } else {
+      result.className = "result-line pending";
+      result.textContent = "Not yet contested";
+    }
+    card.appendChild(result);
+
+    if(m.winner){
+      card.appendChild(starRow(id, avg));
+    }
+
+    grid.appendChild(card);
+  });
+}
+
+function renderStandingsTable(block, tbodySelector){
+  const tbody = document.querySelector(`${tbodySelector} tbody`);
+  tbody.innerHTML = "";
+  computeStandings(block).forEach((row, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="col-name"><span class="rank-num">${i+1}</span>${row.name}</td>
+      <td>${row.w}</td><td>${row.l}</td><td>${row.d}</td>
+      <td class="pts">${row.pts}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderStars(){
+  const wrap = document.getElementById("starLeaderboard");
+  wrap.innerHTML = "";
+  const entries = [];
+  NIGHTS.forEach(night => {
+    night.matches.forEach((m, i) => {
+      const id = matchId(night.id, i);
+      const avg = avgRating(id);
+      if(avg) entries.push({ id, a:m.a, b:m.b, night: night.label, avg });
+    });
+  });
+  entries.sort((x,y) => y.avg - x.avg);
+
+  if(!entries.length){
+    wrap.innerHTML = `<div class="empty-state">No ratings yet — go star some matches on the CARDS tab.</div>`;
+    return;
+  }
+  entries.forEach((e, i) => {
+    const row = document.createElement("div");
+    row.className = "leader-row";
+    row.innerHTML = `
+      <span class="leader-rank">${i+1}</span>
+      <span class="leader-bout">${e.a} vs ${e.b}</span>
+      <span class="leader-meta">${e.night}</span>
+      <span class="leader-avg">${e.avg.toFixed(1)}★</span>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+function render(){
+  renderTabs();
+  renderNightPicker();
+  renderCards();
+  renderStandingsTable("A", "#blockA");
+  renderStandingsTable("B", "#blockB");
+  renderStars();
+}
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    activeView = tab.dataset.view;
+    render();
+  });
+});
+
+render();
