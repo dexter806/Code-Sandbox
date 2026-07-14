@@ -252,6 +252,7 @@ main{ max-width: 1080px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
 }
 .ticket-block.a{ background: rgba(227,28,95,0.18); color: #ff6b9a; }
 .ticket-block.b{ background: rgba(34,199,229,0.18); color: #7fe3f5; }
+.ticket-block.final{ background: rgba(232,255,41,0.16); color: var(--flash); }
 
 .bout{
   display: grid;
