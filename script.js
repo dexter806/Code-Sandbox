@@ -238,10 +238,25 @@ const NIGHTS = [
 const BLOCK_A = ["Konosuke Takeshita","Yota Tsuji","Hirooki Goto","SANADA","Shingo Takagi","Jake Lee","Yuto-Ice","Great-O-Khan","Boltin Oleg","Ryohei Oiwa"];
 const BLOCK_B = ["Zack Sabre Jr","Shota Umino","Yuya Uemura","Callum Newman","Aaron Wolf","HENARE","Ren Narita","OSKAR","Gabe Kidd","Drilla Moloney"];
 
-/* Turns "Konosuke Takeshita" into "konosuke-takeshita" so it matches
-   the photo filename we look for in images/wrestlers/ */
-function slug(name){
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+/* Generates a simple original avatar for each wrestler: a silhouette
+   bust with their initials, colored by block. No external image files,
+   no real photos — just an abstract graphic in the site's own palette. */
+function initials(name){
+  const parts = name.replace(/[^A-Za-z\s-]/g, "").split(/\s+/).filter(Boolean);
+  if(parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function avatarDataUri(name, block){
+  const accent = block === "B" ? "#22C7E5" : "#E31C5F";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <rect width="100" height="100" fill="#0B0A0D"/>
+    <polygon points="0,100 60,100 100,40 100,0 40,0" fill="${accent}" opacity="0.22"/>
+    <circle cx="50" cy="36" r="18" fill="${accent}" opacity="0.4"/>
+    <path d="M18 100 Q18 60 50 60 Q82 60 82 100 Z" fill="${accent}" opacity="0.4"/>
+    <text x="50" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="30" fill="#EDE7DA">${initials(name)}</text>
+  </svg>`;
+  return "data:image/svg+xml," + encodeURIComponent(svg);
 }
 
 /* ============================================
@@ -365,12 +380,12 @@ function renderCards(){
     bout.className = "bout";
     bout.innerHTML = `
       <div class="wrestler-wrap left">
-        <img class="wrestler-photo" src="images/wrestlers/${slug(m.a)}.jpg" alt="" onerror="this.style.display='none'">
+        <img class="wrestler-photo" src="${avatarDataUri(m.a, m.block)}" alt="">
         <div class="wrestler left ${m.winner===m.a ? 'winner':''}">${m.a}</div>
       </div>
       <div class="vs">VS</div>
       <div class="wrestler-wrap right">
-        <img class="wrestler-photo" src="images/wrestlers/${slug(m.b)}.jpg" alt="" onerror="this.style.display='none'">
+        <img class="wrestler-photo" src="${avatarDataUri(m.b, m.block)}" alt="">
         <div class="wrestler right ${m.winner===m.b ? 'winner':''}">${m.b}</div>
       </div>
     `;
