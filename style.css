@@ -244,35 +244,52 @@ main{ max-width: 1080px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
   align-items: center;
   gap: 0.6rem;
 }
-.wrestler-wrap{
-  position: relative;
-  overflow: hidden;
-  border-radius: 6px;
-  min-height: 2.2rem;
-  display: flex;
-  align-items: center;
-}
-.wrestler-wrap.left{ justify-content: flex-end; }
-.wrestler-wrap.right{ justify-content: flex-start; }
-
-.wrestler-photo{
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 48px;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  pointer-events: none;
-}
-.wrestler-wrap.left .wrestler-photo{ left: 0; transform: translateX(-14px); mask-image: linear-gradient(to right, black 60%, transparent); }
-.wrestler-wrap.right .wrestler-photo{ right: 0; transform: translateX(14px); mask-image: linear-gradient(to left, black 60%, transparent); }
-.wrestler-wrap:hover .wrestler-photo{ opacity: 0.9; transform: translateX(0); }
-
-.wrestler{ font-family: var(--font-display); font-size: 1.25rem; line-height: 1.05; letter-spacing: 0.01em; position: relative; z-index: 1; padding: 0.1rem 0.3rem; }
+.wrestler{ font-family: var(--font-display); font-size: 1.25rem; line-height: 1.05; letter-spacing: 0.01em; }
 .wrestler.left{ text-align: right; }
 .wrestler.right{ text-align: left; }
 .wrestler.winner{ color: var(--gold); }
 .vs{ font-family: var(--font-mono); font-size: 0.7rem; color: var(--paper-dim); }
+
+/* ============================================
+   SPOTLIGHT — fixed side panels that reveal the
+   two wrestlers of whichever match card is hovered
+   ============================================ */
+.spotlight{
+  position: fixed;
+  top: 50%;
+  width: 132px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 60;
+  text-align: center;
+}
+.spotlight.left{ left: 18px; transform: translateY(-50%) translateX(-16px); }
+.spotlight.right{ right: 18px; transform: translateY(-50%) translateX(16px); }
+.spotlight.visible{ opacity: 1; transform: translateY(-50%) translateX(0); }
+.spotlight img{
+  width: 100%;
+  aspect-ratio: 1 / 1.2;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.spotlight .sp-name{
+  font-family: var(--font-display);
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  line-height: 1.05;
+}
+.spotlight .sp-record{
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--paper-dim);
+  margin-top: 0.2rem;
+}
+@media (max-width: 1350px){
+  .spotlight{ display: none; } /* no room beside the content on narrower screens */
+}
 
 .result-line{
   font-family: var(--font-mono);
