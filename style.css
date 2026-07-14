@@ -2,13 +2,15 @@
    TOKENS
    ============================================ */
 :root{
-  --sumi:        #121014;
-  --sumi-raised: #1b1820;
+  --sumi:        #0B0A0D;
+  --sumi-raised: #17151A;
   --paper:       #EDE7DA;
-  --paper-dim:   #b9b3a4;
-  --vermillion:  #E14127;
-  --vermillion-deep: #a82c17;
-  --gold:        #C9A227;
+  --paper-dim:   #948e82;
+  --vermillion:  #E31C5F;
+  --vermillion-deep: #A8113F;
+  --cyan:        #22C7E5;
+  --flash:       #E8FF29;
+  --gold:        #E8FF29;
   --line:        rgba(237,231,218,0.14);
   --line-strong: rgba(237,231,218,0.28);
 
@@ -34,7 +36,8 @@ body{
   background: repeating-linear-gradient(
     -45deg,
     var(--vermillion) 0 18px,
-    var(--sumi) 18px 36px
+    var(--flash) 18px 20px,
+    var(--sumi) 20px 36px
   );
 }
 
@@ -247,8 +250,8 @@ main{ max-width: 1080px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
   border-radius: 999px;
   margin-bottom: 0.7rem;
 }
-.ticket-block.a{ background: rgba(225,65,39,0.18); color: #ff8069; }
-.ticket-block.b{ background: rgba(201,162,39,0.18); color: #e8c766; }
+.ticket-block.a{ background: rgba(227,28,95,0.18); color: #ff6b9a; }
+.ticket-block.b{ background: rgba(34,199,229,0.18); color: #7fe3f5; }
 
 .bout{
   display: grid;
@@ -316,8 +319,8 @@ main{ max-width: 1080px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
   padding-bottom: 0.4rem;
   border-bottom: 2px solid var(--line);
 }
-.block-title.block-a{ border-bottom-color: var(--vermillion); color: #ff8069; }
-.block-title.block-b{ border-bottom-color: var(--gold); color: #e8c766; }
+.block-title.block-a{ border-bottom-color: var(--vermillion); color: #ff6b9a; }
+.block-title.block-b{ border-bottom-color: var(--cyan); color: #7fe3f5; }
 
 .block-table table{ width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.82rem; }
 .block-table th{
