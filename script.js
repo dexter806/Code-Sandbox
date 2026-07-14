@@ -238,6 +238,12 @@ const NIGHTS = [
 const BLOCK_A = ["Konosuke Takeshita","Yota Tsuji","Hirooki Goto","SANADA","Shingo Takagi","Jake Lee","Yuto-Ice","Great-O-Khan","Boltin Oleg","Ryohei Oiwa"];
 const BLOCK_B = ["Zack Sabre Jr","Shota Umino","Yuya Uemura","Callum Newman","Aaron Wolf","HENARE","Ren Narita","OSKAR","Gabe Kidd","Drilla Moloney"];
 
+/* Turns "Konosuke Takeshita" into "konosuke-takeshita" so it matches
+   the photo filename we look for in images/wrestlers/ */
+function slug(name){
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
 /* ============================================
    RATINGS (stored in this browser only)
    ============================================ */
@@ -358,9 +364,15 @@ function renderCards(){
     const bout = document.createElement("div");
     bout.className = "bout";
     bout.innerHTML = `
-      <div class="wrestler left ${m.winner===m.a ? 'winner':''}">${m.a}</div>
+      <div class="wrestler-wrap left">
+        <img class="wrestler-photo" src="images/wrestlers/${slug(m.a)}.jpg" alt="" onerror="this.style.display='none'">
+        <div class="wrestler left ${m.winner===m.a ? 'winner':''}">${m.a}</div>
+      </div>
       <div class="vs">VS</div>
-      <div class="wrestler right ${m.winner===m.b ? 'winner':''}">${m.b}</div>
+      <div class="wrestler-wrap right">
+        <img class="wrestler-photo" src="images/wrestlers/${slug(m.b)}.jpg" alt="" onerror="this.style.display='none'">
+        <div class="wrestler right ${m.winner===m.b ? 'winner':''}">${m.b}</div>
+      </div>
     `;
     card.appendChild(bout);
 
