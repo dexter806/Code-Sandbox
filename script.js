@@ -44,7 +44,7 @@ const NIGHTS = [
     label: "N3 · Jul 19",
     venue: "Sapporo, Hokkaido",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Aaron Wolf",      winner: "Aaron Wolf",     method: "Forfeit — Umino medical withdrawal" },
+      { block: "B", a: "Shota Umino",     b: "Aaron Wolf",      winner: null },
       { block: "B", a: "Yuya Uemura",     b: "Zack Sabre Jr",   winner: null },
       { block: "B", a: "HENARE",          b: "Drilla Moloney",  winner: null },
       { block: "B", a: "Callum Newman",   b: "Ren Narita",      winner: null },
@@ -70,7 +70,7 @@ const NIGHTS = [
     label: "N5 · Jul 22",
     venue: "Nagaoka",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Ren Narita",      winner: "Ren Narita",     method: "Forfeit — Umino medical withdrawal" },
+      { block: "B", a: "Shota Umino",     b: "Ren Narita",      winner: null },
       { block: "B", a: "Yuya Uemura",     b: "Drilla Moloney",  winner: null },
       { block: "B", a: "Zack Sabre Jr",   b: "Callum Newman",   winner: null },
       { block: "B", a: "Aaron Wolf",      b: "Gabe Kidd",       winner: null },
@@ -96,7 +96,7 @@ const NIGHTS = [
     label: "N7 · Jul 26",
     venue: "Ebara Wave Arena, Ota, Tokyo",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Yuya Uemura",     winner: "Yuya Uemura",    method: "Forfeit — Umino medical withdrawal" },
+      { block: "B", a: "Shota Umino",     b: "Yuya Uemura",     winner: null },
       { block: "B", a: "Callum Newman",   b: "Drilla Moloney",  winner: null },
       { block: "B", a: "Zack Sabre Jr",   b: "Gabe Kidd",       winner: null },
       { block: "B", a: "HENARE",          b: "Ren Narita",      winner: null },
@@ -122,7 +122,7 @@ const NIGHTS = [
     label: "N9 · Jul 31",
     venue: "Takamatsu City Gymnasium, Kagawa",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "HENARE",          winner: "HENARE",         method: "Forfeit — Umino medical withdrawal" },
+      { block: "B", a: "Shota Umino",     b: "HENARE",          winner: null },
       { block: "B", a: "Yuya Uemura",     b: "Aaron Wolf",      winner: null },
       { block: "B", a: "Zack Sabre Jr",   b: "Ren Narita",      winner: null },
       { block: "B", a: "Callum Newman",   b: "Gabe Kidd",       winner: null },
@@ -148,7 +148,7 @@ const NIGHTS = [
     label: "N11 · Aug 2",
     venue: "Japan Tour",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Callum Newman",   winner: "Callum Newman",  method: "Forfeit — Umino medical withdrawal" },
+      { block: "B", a: "Shota Umino",     b: "Callum Newman",   winner: null },
       { block: "B", a: "Yuya Uemura",     b: "Ren Narita",      winner: null },
       { block: "B", a: "Gabe Kidd",       b: "HENARE",          winner: null },
       { block: "B", a: "Aaron Wolf",      b: "Drilla Moloney",  winner: null },
@@ -174,7 +174,7 @@ const NIGHTS = [
     label: "N13 · Aug 8",
     venue: "Yokohama Budokan, Kanagawa",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Gabe Kidd",       winner: "Gabe Kidd",      method: "Forfeit — Umino medical withdrawal" },
+      { block: "B", a: "Shota Umino",     b: "Gabe Kidd",       winner: null },
       { block: "B", a: "Yuya Uemura",     b: "HENARE",          winner: null },
       { block: "B", a: "Drilla Moloney",  b: "Zack Sabre Jr",   winner: null },
       { block: "B", a: "Aaron Wolf",      b: "Ren Narita",      winner: null },
@@ -204,7 +204,7 @@ const NIGHTS = [
       { block: "B", a: "Drilla Moloney",  b: "Ren Narita",      winner: null },
       { block: "B", a: "Zack Sabre Jr",   b: "HENARE",          winner: null },
       { block: "B", a: "Aaron Wolf",      b: "Callum Newman",   winner: null },
-      { block: "B", a: "Shota Umino",     b: "OSKAR",           winner: "OSKAR",          method: "Forfeit — Umino medical withdrawal" },
+      { block: "B", a: "Shota Umino",     b: "OSKAR",           winner: null },
     ]
   },
   {
@@ -226,7 +226,7 @@ const NIGHTS = [
     label: "N17 · Aug 13",
     venue: "Korakuen Hall, Tokyo",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Drilla Moloney",  winner: "Drilla Moloney", method: "Forfeit — Umino medical withdrawal" },
+      { block: "B", a: "Shota Umino",     b: "Drilla Moloney",  winner: null },
       { block: "B", a: "Callum Newman",   b: "HENARE",          winner: null },
       { block: "B", a: "Gabe Kidd",       b: "Ren Narita",      winner: null },
       { block: "B", a: "Zack Sabre Jr",   b: "Aaron Wolf",      winner: null },
