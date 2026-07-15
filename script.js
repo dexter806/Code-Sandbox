@@ -283,6 +283,17 @@ function avatarDataUri(name, block){
   return "data:image/svg+xml," + encodeURIComponent(svg);
 }
 
+/* Optional per-wrestler photo overrides. If a name is listed here, the
+   spotlight panel uses that image file instead of the generated avatar.
+   Anyone not listed keeps the generated avatar as normal. */
+const PHOTO_OVERRIDES = {
+  "Yota Tsuji": "images/Tsuji.png",
+};
+
+function getAvatarSrc(name, block){
+  return PHOTO_OVERRIDES[name] || avatarDataUri(name, block);
+}
+
 /* ============================================
    RATINGS — shared across everyone, stored in a
    real database via /api/rate and /api/ratings.
@@ -417,7 +428,7 @@ function spotlightHTML(name, block, rec){
   const recText = rec ? `${rec.w}-${rec.l}${rec.d ? "-" + rec.d : ""} &middot; ${rec.pts} PTS` : "record TBD";
   const outTag = OUT_WRESTLERS.includes(name) ? ` <span class="sp-out">OUT</span>` : "";
   return `
-    <img src="${avatarDataUri(name, block)}" alt="">
+    <img src="${getAvatarSrc(name, block)}" alt="" onerror="this.onerror=null;this.src='${avatarDataUri(name, block)}'">
     <div class="sp-name">${name}${outTag}</div>
     <div class="sp-record">${recText}</div>
   `;
