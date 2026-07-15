@@ -44,7 +44,7 @@ const NIGHTS = [
     label: "N3 · Jul 19",
     venue: "Sapporo, Hokkaido",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Aaron Wolf",      winner: null },
+      { block: "B", a: "Shota Umino",     b: "Aaron Wolf",      winner: "Aaron Wolf",     method: "Forfeit — Umino medical withdrawal" },
       { block: "B", a: "Yuya Uemura",     b: "Zack Sabre Jr",   winner: null },
       { block: "B", a: "HENARE",          b: "Drilla Moloney",  winner: null },
       { block: "B", a: "Callum Newman",   b: "Ren Narita",      winner: null },
@@ -70,7 +70,7 @@ const NIGHTS = [
     label: "N5 · Jul 22",
     venue: "Nagaoka",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Ren Narita",      winner: null },
+      { block: "B", a: "Shota Umino",     b: "Ren Narita",      winner: "Ren Narita",     method: "Forfeit — Umino medical withdrawal" },
       { block: "B", a: "Yuya Uemura",     b: "Drilla Moloney",  winner: null },
       { block: "B", a: "Zack Sabre Jr",   b: "Callum Newman",   winner: null },
       { block: "B", a: "Aaron Wolf",      b: "Gabe Kidd",       winner: null },
@@ -96,7 +96,7 @@ const NIGHTS = [
     label: "N7 · Jul 26",
     venue: "Ebara Wave Arena, Ota, Tokyo",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Yuya Uemura",     winner: null },
+      { block: "B", a: "Shota Umino",     b: "Yuya Uemura",     winner: "Yuya Uemura",    method: "Forfeit — Umino medical withdrawal" },
       { block: "B", a: "Callum Newman",   b: "Drilla Moloney",  winner: null },
       { block: "B", a: "Zack Sabre Jr",   b: "Gabe Kidd",       winner: null },
       { block: "B", a: "HENARE",          b: "Ren Narita",      winner: null },
@@ -122,7 +122,7 @@ const NIGHTS = [
     label: "N9 · Jul 31",
     venue: "Takamatsu City Gymnasium, Kagawa",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "HENARE",          winner: null },
+      { block: "B", a: "Shota Umino",     b: "HENARE",          winner: "HENARE",         method: "Forfeit — Umino medical withdrawal" },
       { block: "B", a: "Yuya Uemura",     b: "Aaron Wolf",      winner: null },
       { block: "B", a: "Zack Sabre Jr",   b: "Ren Narita",      winner: null },
       { block: "B", a: "Callum Newman",   b: "Gabe Kidd",       winner: null },
@@ -148,7 +148,7 @@ const NIGHTS = [
     label: "N11 · Aug 2",
     venue: "Japan Tour",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Callum Newman",   winner: null },
+      { block: "B", a: "Shota Umino",     b: "Callum Newman",   winner: "Callum Newman",  method: "Forfeit — Umino medical withdrawal" },
       { block: "B", a: "Yuya Uemura",     b: "Ren Narita",      winner: null },
       { block: "B", a: "Gabe Kidd",       b: "HENARE",          winner: null },
       { block: "B", a: "Aaron Wolf",      b: "Drilla Moloney",  winner: null },
@@ -174,7 +174,7 @@ const NIGHTS = [
     label: "N13 · Aug 8",
     venue: "Yokohama Budokan, Kanagawa",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Gabe Kidd",       winner: null },
+      { block: "B", a: "Shota Umino",     b: "Gabe Kidd",       winner: "Gabe Kidd",      method: "Forfeit — Umino medical withdrawal" },
       { block: "B", a: "Yuya Uemura",     b: "HENARE",          winner: null },
       { block: "B", a: "Drilla Moloney",  b: "Zack Sabre Jr",   winner: null },
       { block: "B", a: "Aaron Wolf",      b: "Ren Narita",      winner: null },
@@ -204,7 +204,7 @@ const NIGHTS = [
       { block: "B", a: "Drilla Moloney",  b: "Ren Narita",      winner: null },
       { block: "B", a: "Zack Sabre Jr",   b: "HENARE",          winner: null },
       { block: "B", a: "Aaron Wolf",      b: "Callum Newman",   winner: null },
-      { block: "B", a: "Shota Umino",     b: "OSKAR",           winner: null },
+      { block: "B", a: "Shota Umino",     b: "OSKAR",           winner: "OSKAR",          method: "Forfeit — Umino medical withdrawal" },
     ]
   },
   {
@@ -226,7 +226,7 @@ const NIGHTS = [
     label: "N17 · Aug 13",
     venue: "Korakuen Hall, Tokyo",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Drilla Moloney",  winner: null },
+      { block: "B", a: "Shota Umino",     b: "Drilla Moloney",  winner: "Drilla Moloney", method: "Forfeit — Umino medical withdrawal" },
       { block: "B", a: "Callum Newman",   b: "HENARE",          winner: null },
       { block: "B", a: "Gabe Kidd",       b: "Ren Narita",      winner: null },
       { block: "B", a: "Zack Sabre Jr",   b: "Aaron Wolf",      winner: null },
@@ -256,6 +256,11 @@ const NIGHTS = [
 
 const BLOCK_A = ["Konosuke Takeshita","Yota Tsuji","Hirooki Goto","SANADA","Shingo Takagi","Jake Lee","Yuto-Ice","Great-O-Khan","Boltin Oleg","Ryohei Oiwa"];
 const BLOCK_B = ["Zack Sabre Jr","Shota Umino","Yuya Uemura","Callum Newman","Aaron Wolf","HENARE","Ren Narita","OSKAR","Gabe Kidd","Drilla Moloney"];
+
+/* Wrestlers withdrawn from the tournament — their name gets an "OUT" stamp
+   wherever it appears on a match card. Add more names here if it happens
+   again; nothing else needs to change. */
+const OUT_WRESTLERS = ["Shota Umino"];
 
 /* Generates a simple original avatar for each wrestler: a silhouette
    bust with their initials, colored by block. No external image files,
@@ -410,9 +415,10 @@ function getRecord(name){
 
 function spotlightHTML(name, block, rec){
   const recText = rec ? `${rec.w}-${rec.l}${rec.d ? "-" + rec.d : ""} &middot; ${rec.pts} PTS` : "record TBD";
+  const outTag = OUT_WRESTLERS.includes(name) ? ` <span class="sp-out">OUT</span>` : "";
   return `
     <img src="${avatarDataUri(name, block)}" alt="">
-    <div class="sp-name">${name}</div>
+    <div class="sp-name">${name}${outTag}</div>
     <div class="sp-record">${recText}</div>
   `;
 }
@@ -559,9 +565,9 @@ function renderCards(){
     const bout = document.createElement("div");
     bout.className = "bout";
     bout.innerHTML = `
-      <div class="wrestler left ${m.winner===m.a ? 'winner':''}">${m.a}</div>
+      <div class="wrestler left ${m.winner===m.a ? 'winner':''} ${OUT_WRESTLERS.includes(m.a) ? 'out':''}">${m.a}</div>
       <div class="vs">VS</div>
-      <div class="wrestler right ${m.winner===m.b ? 'winner':''}">${m.b}</div>
+      <div class="wrestler right ${m.winner===m.b ? 'winner':''} ${OUT_WRESTLERS.includes(m.b) ? 'out':''}">${m.b}</div>
     `;
     card.appendChild(bout);
     card.addEventListener("mouseenter", () => showSpotlight(m));
@@ -590,8 +596,9 @@ function renderStandingsTable(block, tbodySelector){
   tbody.innerHTML = "";
   computeStandings(block).forEach((row, i) => {
     const tr = document.createElement("tr");
+    const outTag = OUT_WRESTLERS.includes(row.name) ? ` <span class="table-out">OUT</span>` : "";
     tr.innerHTML = `
-      <td class="col-name"><span class="rank-num">${i+1}</span>${row.name}</td>
+      <td class="col-name"><span class="rank-num">${i+1}</span>${row.name}${outTag}</td>
       <td>${row.w}</td><td>${row.l}</td><td>${row.d}</td>
       <td class="pts">${row.pts}</td>
     `;
