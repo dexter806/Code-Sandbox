@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NJPW 36th G1 — Fan Tracker</title>
+<title>36th G1 — Fan Tracker</title>
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -55,15 +55,19 @@
       </div>
     </section>
     <section id="view-stars" class="view">
-      <p class="stars-intro">Rate matches from the CARDS tab. Your top 10 rated matches, and how each wrestler ranks based on the matches you've rated.</p>
+      <p class="stars-intro">Rate matches from the CARDS tab. Your top 10 rated matches, and how each wrestler ranks per block based on the matches you've rated.</p>
       <div class="stars-wrap">
         <div class="stars-col">
           <h2 class="stars-heading">YOUR TOP 10</h2>
           <div class="star-leaderboard" id="myLeaderboard"></div>
         </div>
         <div class="stars-col">
-          <h2 class="stars-heading">BY WRESTLER</h2>
-          <div class="star-leaderboard" id="wrestlerLeaderboard"></div>
+          <h2 class="stars-heading stars-heading-a">BLOCK A WRESTLERS</h2>
+          <div class="star-leaderboard" id="wrestlerA"></div>
+        </div>
+        <div class="stars-col">
+          <h2 class="stars-heading stars-heading-b">BLOCK B WRESTLERS</h2>
+          <div class="star-leaderboard" id="wrestlerB"></div>
         </div>
       </div>
     </section>
