@@ -311,6 +311,13 @@ function setMyRating(id, stars){
     localStorage.setItem(MY_RATINGS_KEY, JSON.stringify(all));
   }catch(e){}
 }
+function clearMyRating(id){
+  try{
+    const all = JSON.parse(localStorage.getItem(MY_RATINGS_KEY)) || {};
+    delete all[id];
+    localStorage.setItem(MY_RATINGS_KEY, JSON.stringify(all));
+  }catch(e){}
+}
 
 function matchId(nightId, index){ return `${nightId}-m${index}`; }
 
@@ -343,6 +350,21 @@ async function rateMatch(id, stars){
     render();
   }catch(e){
     console.error("Couldn't save rating:", e);
+  }
+}
+
+async function resetMatch(id){
+  clearMyRating(id);
+  delete ratingsCache[id];
+  render();
+  try{
+    await fetch("/api/rate", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ matchId: id, voterId: getVoterId() }),
+    });
+  }catch(e){
+    console.error("Couldn't clear rating on server:", e);
   }
 }
 
@@ -463,7 +485,7 @@ function starRow(id){
   wholeSel.className = "rate-select";
   wholeSel.innerHTML = `
     <option value="" ${wholeStart === null ? "selected" : ""} disabled>★</option>
-    ${[1,2,3,4,5].map(n => `<option value="${n}" ${wholeStart === n ? "selected" : ""}>${n}</option>`).join("")}
+    ${[0,1,2,3,4,5].map(n => `<option value="${n}" ${wholeStart === n ? "selected" : ""}>${n}</option>`).join("")}
   `;
 
   const fracSel = document.createElement("select");
@@ -505,6 +527,17 @@ function starRow(id){
   row.appendChild(display);
   row.appendChild(selectRow);
   row.appendChild(label);
+
+  if(mine !== null){
+    const resetBtn = document.createElement("button");
+    resetBtn.className = "rate-reset";
+    resetBtn.type = "button";
+    resetBtn.textContent = "reset";
+    resetBtn.title = "Clear your rating for this match";
+    resetBtn.addEventListener("click", () => resetMatch(id));
+    row.appendChild(resetBtn);
+  }
+
   return row;
 }
 
