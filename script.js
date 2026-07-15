@@ -287,8 +287,26 @@ function avatarDataUri(name, block){
    spotlight panel uses that image file instead of the generated avatar.
    Anyone not listed keeps the generated avatar as normal. */
 const PHOTO_OVERRIDES = {
-  "Yota Tsuji": "images/Tsuji.png",
   "Konosuke Takeshita": "images/Takeshita.png",
+  "Yota Tsuji": "images/Tsuji.png",
+  "Hirooki Goto": "images/Goto.png",
+  "SANADA": "images/Sanada.png",
+  "Shingo Takagi": "images/Takagi.png",
+  "Jake Lee": "images/Lee.png",
+  "Yuto-Ice": "images/Yuto-Ice.png",
+  "Great-O-Khan": "images/Khan.png",
+  "Boltin Oleg": "images/Oleg.png",
+  "Ryohei Oiwa": "images/Oiwa.png",
+  "Zack Sabre Jr": "images/ZSJ.png",
+  "Shota Umino": "images/Umino.png",
+  "Yuya Uemura": "images/Uemura.png",
+  "Callum Newman": "images/Newman.png",
+  "Aaron Wolf": "images/Wolf.png",
+  "HENARE": "images/Henare.png",
+  "Ren Narita": "images/Narita.png",
+  "OSKAR": "images/Oskar.png",
+  "Gabe Kidd": "images/Kidd.png",
+  "Drilla Moloney": "images/Moloney.png",
 };
 
 function getAvatarSrc(name, block){
