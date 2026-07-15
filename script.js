@@ -288,6 +288,7 @@ function avatarDataUri(name, block){
    Anyone not listed keeps the generated avatar as normal. */
 const PHOTO_OVERRIDES = {
   "Yota Tsuji": "images/Tsuji.png",
+  "Konosuke Takeshita": "images/Takeshita.png",
 };
 
 function getAvatarSrc(name, block){
