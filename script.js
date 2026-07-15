@@ -445,9 +445,12 @@ function getRecord(name){
 
 function spotlightHTML(name, block, rec){
   const recText = rec ? `${rec.w}-${rec.l}${rec.d ? "-" + rec.d : ""} &middot; ${rec.pts} PTS` : "record TBD";
-  const outTag = OUT_WRESTLERS.includes(name) ? ` <span class="sp-out">OUT</span>` : "";
+  const isOut = OUT_WRESTLERS.includes(name);
+  const outTag = isOut ? ` <span class="sp-out">OUT</span>` : "";
   return `
-    <img src="${getAvatarSrc(name, block)}" alt="" onerror="this.onerror=null;this.src='${avatarDataUri(name, block)}'">
+    <div class="sp-photo-wrap ${isOut ? 'out' : ''}">
+      <img src="${getAvatarSrc(name, block)}" alt="" onerror="this.onerror=null;this.src='${avatarDataUri(name, block)}'">
+    </div>
     <div class="sp-name">${name}${outTag}</div>
     <div class="sp-record">${recText}</div>
   `;
