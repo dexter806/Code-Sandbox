@@ -664,12 +664,14 @@ function renderMyStars(){
 
 /* Ranks wrestlers by the average of YOUR ratings across every match of
    theirs you've rated. e.g. 8 matches you rated 4★ + 2 matches at 5★
-   = (8*4 + 2*5) / 10 = 4.2★ for that wrestler. */
-function renderWrestlerRanking(){
-  const wrap = document.getElementById("wrestlerLeaderboard");
+   = (8*4 + 2*5) / 10 = 4.2★ for that wrestler.
+   Now scoped to one block at a time — pass "A" or "B". */
+function renderWrestlerRanking(block, elementId){
+  const wrap = document.getElementById(elementId);
   if(!wrap) return;
   wrap.innerHTML = "";
 
+  const roster = block === "A" ? BLOCK_A : BLOCK_B;
   const tally = {}; // name -> { total, count }
   NIGHTS.forEach(night => {
     night.matches.forEach((m, i) => {
@@ -677,6 +679,7 @@ function renderWrestlerRanking(){
       const mine = getMyRating(id);
       if(mine === null) return;
       [m.a, m.b].forEach(name => {
+        if(!roster.includes(name)) return; // keep this board to just its own block
         if(!tally[name]) tally[name] = { total: 0, count: 0 };
         tally[name].total += mine;
         tally[name].count += 1;
@@ -690,7 +693,7 @@ function renderWrestlerRanking(){
   entries.sort((x, y) => y.avg - x.avg || y.count - x.count);
 
   if(!entries.length){
-    wrap.innerHTML = `<div class="empty-state">Rate some matches to build wrestler rankings.</div>`;
+    wrap.innerHTML = `<div class="empty-state">No rated matches for this block yet.</div>`;
     return;
   }
   entries.forEach((e, i) => {
@@ -714,7 +717,8 @@ function render(){
   renderStandingsTable("B", "#blockB");
   renderStars();
   renderMyStars();
-  renderWrestlerRanking();
+  renderWrestlerRanking("A", "wrestlerA");
+  renderWrestlerRanking("B", "wrestlerB");
 }
 
 document.querySelectorAll(".tab").forEach(tab => {
