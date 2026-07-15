@@ -436,63 +436,74 @@ function renderNightPicker(){
   });
 }
 
-function starRow(id, avg){
+function starRow(id){
   const row = document.createElement("div");
   row.className = "rate-row";
 
-  const count = ratingCount(id);
   const mine = getMyRating(id);
-  const current = mine ?? avg ?? 0;
+  const wholeStart = mine !== null ? Math.floor(mine) : null;
+  const fracStart = mine !== null ? Math.round((mine - Math.floor(mine)) * 100) / 100 : null;
 
-  const bar = document.createElement("div");
-  bar.className = "rate-bar";
-  bar.tabIndex = 0;
-  bar.setAttribute("role", "slider");
-  bar.setAttribute("aria-valuemin", "0");
-  bar.setAttribute("aria-valuemax", "5");
-  bar.setAttribute("aria-valuenow", String(current));
-  bar.title = "Click a star to rate, or use arrow keys — snaps to quarter-star precision";
-  bar.innerHTML = `
+  const display = document.createElement("div");
+  display.className = "star-display";
+  display.innerHTML = `
     <span class="star-back">★★★★★</span>
-    <span class="star-front" style="width:${(current / 5) * 100}%">★★★★★</span>
+    <span class="star-front" style="width:${((mine ?? 0) / 5) * 100}%">★★★★★</span>
   `;
+  const front = display.querySelector(".star-front");
 
   const label = document.createElement("span");
   label.className = "rate-avg";
-  if(avg && mine !== null){
-    label.textContent = `${avg.toFixed(2)}★ · ${count} vote${count === 1 ? "" : "s"} · you: ${mine.toFixed(2)}★`;
-  } else if(avg){
-    label.textContent = `${avg.toFixed(2)}★ · ${count} vote${count === 1 ? "" : "s"}`;
-  } else if(mine !== null){
-    label.textContent = `you: ${mine.toFixed(2)}★ · waiting on others`;
-  } else {
-    label.textContent = "click a star to rate it";
-  }
+  label.textContent = mine !== null ? `you: ${mine.toFixed(2)}★` : "select stars to rate it";
 
-  const front = bar.querySelector(".star-front");
-  function setFill(val){ front.style.width = `${(val / 5) * 100}%`; }
-  function revert(){ setFill(current); }
-  function valueFromEvent(e){
-    const rect = bar.getBoundingClientRect();
-    const clientX = e.clientX;
-    const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
-    return Math.round((ratio * 5) / 0.25) * 0.25;
-  }
+  const selectRow = document.createElement("div");
+  selectRow.className = "rate-select-row";
 
-  bar.addEventListener("pointermove", (e) => setFill(valueFromEvent(e)));
-  bar.addEventListener("pointerleave", revert);
-  bar.addEventListener("click", (e) => rateMatch(id, valueFromEvent(e)));
-  bar.addEventListener("keydown", (e) => {
-    if(e.key === "ArrowRight" || e.key === "ArrowUp"){
-      e.preventDefault();
-      rateMatch(id, Math.min(5, current + 0.25));
-    } else if(e.key === "ArrowLeft" || e.key === "ArrowDown"){
-      e.preventDefault();
-      rateMatch(id, Math.max(0, current - 0.25));
+  const wholeSel = document.createElement("select");
+  wholeSel.className = "rate-select";
+  wholeSel.innerHTML = `
+    <option value="" ${wholeStart === null ? "selected" : ""} disabled>★</option>
+    ${[1,2,3,4,5].map(n => `<option value="${n}" ${wholeStart === n ? "selected" : ""}>${n}</option>`).join("")}
+  `;
+
+  const fracSel = document.createElement("select");
+  fracSel.className = "rate-select";
+  fracSel.innerHTML = `
+    <option value="" ${fracStart === null ? "selected" : ""} disabled>¼</option>
+    <option value="0"    ${fracStart === 0    ? "selected" : ""}>.00</option>
+    <option value="0.25" ${fracStart === 0.25 ? "selected" : ""}>.25</option>
+    <option value="0.5"  ${fracStart === 0.5  ? "selected" : ""}>.50</option>
+    <option value="0.75" ${fracStart === 0.75 ? "selected" : ""}>.75</option>
+  `;
+
+  function syncFracLock(){
+    // a whole 5 can't take a quarter on top of it — cap at 5.00
+    const lock = wholeSel.value === "5";
+    [...fracSel.options].forEach(opt => {
+      if(opt.value === "") return;
+      opt.disabled = lock && opt.value !== "0";
+    });
+    if(lock && fracSel.value !== "0" && fracSel.value !== ""){
+      fracSel.value = "0";
     }
-  });
+  }
+  syncFracLock();
 
-  row.appendChild(bar);
+  function tryCommit(){
+    if(!wholeSel.value || fracSel.value === "") return;
+    const val = Math.min(5, parseFloat(wholeSel.value) + parseFloat(fracSel.value));
+    front.style.width = `${(val / 5) * 100}%`;
+    rateMatch(id, val);
+  }
+
+  wholeSel.addEventListener("change", () => { syncFracLock(); tryCommit(); });
+  fracSel.addEventListener("change", tryCommit);
+
+  selectRow.appendChild(wholeSel);
+  selectRow.appendChild(fracSel);
+
+  row.appendChild(display);
+  row.appendChild(selectRow);
   row.appendChild(label);
   return row;
 }
@@ -503,7 +514,6 @@ function renderCards(){
   const night = NIGHTS.find(n => n.id === activeNight);
   night.matches.forEach((m, i) => {
     const id = matchId(night.id, i);
-    const avg = avgRating(id);
 
     const card = document.createElement("div");
     card.className = "match-ticket";
@@ -535,7 +545,7 @@ function renderCards(){
     card.appendChild(result);
 
     if(m.winner){
-      card.appendChild(starRow(id, avg));
+      card.appendChild(starRow(id));
     }
 
     grid.appendChild(card);
