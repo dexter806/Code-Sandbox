@@ -44,11 +44,11 @@ const NIGHTS = [
     label: "N3 · Jul 19",
     venue: "Sapporo, Hokkaido",
     matches: [
-      { block: "B", a: "Shota Umino",     b: "Aaron Wolf",      winner: null },
-      { block: "B", a: "Yuya Uemura",     b: "Zack Sabre Jr",   winner: null },
-      { block: "B", a: "HENARE",          b: "Drilla Moloney",  winner: null },
-      { block: "B", a: "Callum Newman",   b: "Ren Narita",      winner: null },
-      { block: "B", a: "Gabe Kidd",       b: "OSKAR",           winner: null },
+      { block: "B", a: "Shota Umino",     b: "Aaron Wolf",      winner: "Aaron Wolf",    method: "Forfeit — Umino medical withdrawal" },
+      { block: "B", a: "Yuya Uemura",     b: "Zack Sabre Jr",   winner: "Yuya Uemura",   method: "Lion's Shiner",       time: "25:18" },
+      { block: "B", a: "HENARE",          b: "Drilla Moloney",  winner: "HENARE",        method: "Sit out Powerbomb",   time: "13:13" },
+      { block: "B", a: "Callum Newman",   b: "Ren Narita",      winner: "Ren Narita",    method: "Cattle Mutilation",   time: "15:30" },
+      { block: "B", a: "Gabe Kidd",       b: "OSKAR",           winner: "Gabe Kidd",     method: "Piledriver",          time: "7:34" },
     ]
   },
   {
