@@ -466,6 +466,38 @@ main{ max-width: 1080px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
 .block-table td.pts{ color: var(--gold); font-weight: 700; }
 .rank-num{ display:inline-block; width:1.4em; color: var(--paper-dim); }
 
+.c-block{
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--line);
+}
+.c-block-title{
+  border-bottom-color: var(--flash);
+  color: var(--flash);
+}
+.c-block-sub{
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--paper-dim);
+  font-weight: 400;
+}
+.c-block table{ width: 100%; max-width: 420px; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.82rem; }
+.c-block th{
+  text-align: left;
+  color: var(--paper-dim);
+  font-weight: 500;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.3rem;
+  border-bottom: 1px solid var(--line);
+}
+.c-block th:last-child{ text-align: right; }
+.c-block td{ padding: 0.5rem 0.3rem; border-bottom: 1px solid var(--line); }
+.c-block td.pts{ text-align: right; color: var(--flash); font-weight: 700; }
+.c-block td.empty-state{ text-align: center; padding: 1.5rem 0; }
+
 /* ============================================
    TOP RATED
    ============================================ */
