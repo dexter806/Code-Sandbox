@@ -1,88 +1,547 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>36th G1 — Fan Tracker</title>
-<link rel="stylesheet" href="style.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <div class="brand-stripe"></div>
-  <header class="masthead">
-    <div class="masthead-inner">
-      <a class="event-mark" href="/" aria-label="G1 Climax 36 — home">
-        <img class="event-logo" src="g1-36-logo.png" alt="G1 Climax 36">
-      </a>
-      <div class="masthead-text">
-        <p class="eyebrow">NEW JAPAN PRO-WRESTLING &middot; UNOFFICIAL FAN TRACKER</p>
-        <h1>GRADE ONE CLIMAX 36<span class="dot">.</span></h1>
-        <p class="masthead-sub">blocks &middot; cards &middot; your match stars</p>
-      </div>
-      <div class="masthead-meta">
-        <div class="meta-row"><span>WINNER EARNS</span><strong>IWGP World Title shot</strong></div>
-        <div class="meta-row"><span>FINALS</span><strong>Aug 16 — Ryōgoku</strong></div>
-        <div class="meta-row"><span>NEXT CARD</span><strong id="nextCardLabel">—</strong></div>
-        <div class="meta-row"><span>KICKOFF IN</span><strong id="nextCardCountdown">—</strong></div>
-      </div>
-    </div>
-  </header>
-  <nav class="tabs" id="tabs">
-    <button class="tab active" data-view="nights">CARDS</button>
-    <button class="tab" data-view="standings">STANDINGS</button>
-    <button class="tab" data-view="stars">TOP RATED</button>
-  </nav>
-  <main>
-    <section id="view-nights" class="view active">
-      <div class="night-picker" id="nightPicker"></div>
-      <div class="card-grid" id="cardGrid"></div>
-    </section>
-    <section id="view-standings" class="view">
-      <div class="standings-wrap">
-        <div class="block-table" id="blockA">
-          <h2 class="block-title block-a">BLOCK A</h2>
-          <table><thead><tr>
-            <th class="col-name">Wrestler</th><th>W</th><th>L</th><th>D</th><th>PTS</th>
-          </tr></thead><tbody></tbody></table>
-        </div>
-        <div class="block-table" id="blockB">
-          <h2 class="block-title block-b">BLOCK B</h2>
-          <table><thead><tr>
-            <th class="col-name">Wrestler</th><th>W</th><th>L</th><th>D</th><th>PTS</th>
-          </tr></thead><tbody></tbody></table>
-        </div>
-      </div>
-      <div class="c-block">
-        <h2 class="block-title c-block-title">C BLOCK <span class="c-block-sub">— unofficial undercard win counter, no points</span></h2>
-        <table><thead><tr>
-          <th class="col-name">Wrestler</th><th>Wins</th>
-        </tr></thead><tbody id="cBlockBody"></tbody></table>
-      </div>
-    </section>
-    <section id="view-stars" class="view">
-      <p class="stars-intro">Rate matches from the CARDS tab. Your top 10 rated matches, and how each wrestler ranks per block based on the matches you've rated.</p>
-      <div class="stars-wrap">
-        <div class="stars-col">
-          <h2 class="stars-heading">YOUR TOP 10</h2>
-          <div class="star-leaderboard" id="myLeaderboard"></div>
-        </div>
-        <div class="stars-col">
-          <h2 class="stars-heading stars-heading-a">BLOCK A WRESTLERS</h2>
-          <div class="star-leaderboard" id="wrestlerA"></div>
-        </div>
-        <div class="stars-col">
-          <h2 class="stars-heading stars-heading-b">BLOCK B WRESTLERS</h2>
-          <div class="star-leaderboard" id="wrestlerB"></div>
-        </div>
-      </div>
-    </section>
-  </main>
-  <div class="spotlight left" id="spotlightLeft"></div>
-  <div class="spotlight right" id="spotlightRight"></div>
-  <footer class="site-footer">
-    <p>Built for learning &amp; personal use. Results sourced from public wrestling reporting. Not affiliated with New Japan Pro Wrestling.</p>
-  </footer>
-<script src="script.js"></script>
-</body>
-</html>
+/* ============================================
+   TOKENS
+   ============================================ */
+:root{
+  --sumi:        #0B0A0D;
+  --sumi-raised: #17151A;
+  --paper:       #EDE7DA;
+  --paper-dim:   #948e82;
+  --vermillion:  #E31C5F;
+  --vermillion-deep: #A8113F;
+  --cyan:        #22C7E5;
+  --flash:       #E8FF29;
+  --gold:        #E8FF29;
+  --line:        rgba(237,231,218,0.14);
+  --line-strong: rgba(237,231,218,0.28);
+
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'Inter', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+*{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; }
+body{
+  background: var(--sumi);
+  color: var(--paper);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================
+   BRAND STRIPE — hazard-diagonal band, poster-style
+   ============================================ */
+.brand-stripe{
+  height: 6px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--vermillion) 0 14px,
+    var(--sumi) 14px 16px,
+    var(--flash) 16px 30px,
+    var(--sumi) 30px 32px,
+    var(--cyan) 32px 46px,
+    var(--sumi) 46px 48px
+  );
+}
+
+/* ============================================
+   MASTHEAD
+   ============================================ */
+.masthead{
+  position: relative;
+  background:
+    radial-gradient(ellipse 120% 100% at 50% -20%, rgba(225,65,39,0.28), transparent 60%),
+    var(--sumi);
+  border-bottom: 1px solid var(--line-strong);
+  padding: 2.75rem 1.5rem 1.2rem;
+  overflow: hidden;
+}
+.masthead::after{
+  /* faint grain / halftone texture for a printed-poster feel */
+  content:"";
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(237,231,218,0.05) 1px, transparent 1px);
+  background-size: 4px 4px;
+  pointer-events: none;
+}
+.masthead-inner{
+  position: relative;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1.9rem;
+  flex-wrap: wrap;
+}
+
+/* Original G1-style mark: bold wordmark on a diagonal-cut red plate,
+   with the tournament number in a broken ring — evokes the tournament's
+   own bold red/black poster energy without copying the real logotype. */
+.event-mark{
+  position: relative;
+  flex-shrink: 0;
+  width: 180px; height: 180px;
+  margin-left: -90px;
+  display: flex; align-items: center; justify-content: center;
+}
+.event-logo{
+  width: 100%; height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,0.5));
+}
+
+@media (max-width: 640px){
+  .event-mark{
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.eyebrow{
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  margin: 0 0 0.3rem;
+  text-transform: uppercase;
+}
+.masthead-text h1{
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  letter-spacing: 0.01em;
+  margin: 0;
+  line-height: 0.9;
+}
+.masthead-text .dot{ color: var(--vermillion); }
+.masthead-sub{
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--paper-dim);
+  margin: 0.35rem 0 0;
+  letter-spacing: 0.02em;
+}
+
+.masthead-meta{
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+.meta-row{ display:flex; gap: 0.6rem; justify-content: flex-end; color: var(--paper-dim); }
+.meta-row strong{ color: var(--paper); font-weight: 600; }
+
+/* ============================================
+   TABS
+   ============================================ */
+.tabs{
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.tab{
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  background: none;
+  border: none;
+  color: var(--paper-dim);
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.tab:hover{ color: var(--paper); }
+.tab.active{ color: var(--vermillion); border-bottom-color: var(--vermillion); }
+
+main{ max-width: 1080px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
+.view{ display: none; }
+.view.active{ display: block; }
+
+/* ============================================
+   NIGHT PICKER
+   ============================================ */
+.night-picker{
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.night-chip{
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  background: var(--sumi-raised);
+  border: 1px solid var(--line);
+  color: var(--paper-dim);
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.night-chip:hover{ border-color: var(--line-strong); color: var(--paper); }
+.night-chip.active{ background: var(--vermillion); border-color: var(--vermillion); color: var(--paper); }
+
+/* ============================================
+   MATCH CARDS (ticket-stub signature element)
+   ============================================ */
+.card-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.1rem;
+}
+.match-ticket{
+  position: relative;
+  background: var(--sumi-raised);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem 1rem;
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0 7px, rgba(237,231,218,0.05) 7px 8px);
+  background-size: 100% 100%;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.match-ticket:hover{
+  border-color: rgba(225,65,39,0.45);
+  box-shadow: 0 0 0 1px rgba(225,65,39,0.15), 0 8px 24px rgba(0,0,0,0.35);
+}
+.match-ticket::before{
+  /* perforation notch */
+  content:"";
+  position: absolute;
+  top: 50%; left: -9px;
+  width: 18px; height: 18px;
+  background: var(--sumi);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.match-ticket::after{
+  content:"";
+  position: absolute;
+  top: 50%; right: -9px;
+  width: 18px; height: 18px;
+  background: var(--sumi);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.ticket-block{
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  margin-bottom: 0.7rem;
+}
+.ticket-block.a{ background: rgba(227,28,95,0.18); color: #ff6b9a; }
+.ticket-block.b{ background: rgba(34,199,229,0.18); color: #7fe3f5; }
+.ticket-block.final{ background: rgba(232,255,41,0.16); color: var(--flash); }
+
+.bout{
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.6rem;
+}
+.wrestler{ font-family: var(--font-display); font-size: 1.25rem; line-height: 1.05; letter-spacing: 0.01em; }
+.wrestler.left{ text-align: right; }
+.wrestler.right{ text-align: left; }
+.wrestler.winner{ color: var(--gold); }
+.wrestler.out{
+  position: relative;
+  color: var(--paper-dim);
+  opacity: 0.45;
+}
+.wrestler.out::after{
+  content: "OUT";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  background: var(--vermillion);
+  color: var(--sumi);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  padding: 0.15rem 0.55rem;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.55);
+  white-space: nowrap;
+}
+.sp-out, .table-out{
+  display: inline-block;
+  background: var(--vermillion);
+  color: var(--sumi);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+.vs{ font-family: var(--font-mono); font-size: 0.7rem; color: var(--paper-dim); }
+
+/* ============================================
+   SPOTLIGHT — fixed side panels that reveal the
+   two wrestlers of whichever match card is hovered
+   ============================================ */
+.spotlight{
+  position: fixed;
+  top: 50%;
+  width: 190px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 60;
+  text-align: center;
+}
+.spotlight.left{ left: 60px; transform: translateY(-50%) translateX(-16px); }
+.spotlight.right{ right: 60px; transform: translateY(-50%) translateX(16px); }
+.spotlight.visible{ opacity: 1; transform: translateY(-50%) translateX(0); }
+.spotlight img{
+  width: 100%;
+  aspect-ratio: 1 / 1.2;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.sp-photo-wrap{
+  position: relative;
+}
+.sp-photo-wrap.out img{
+  filter: grayscale(1) brightness(0.5);
+}
+.sp-photo-wrap.out::after{
+  content: "OUT";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-10deg);
+  background: var(--vermillion);
+  color: var(--sumi);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  padding: 0.3rem 0.9rem;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+  white-space: nowrap;
+}
+.spotlight .sp-name{
+  font-family: var(--font-display);
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  line-height: 1.05;
+}
+.spotlight .sp-record{
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--paper-dim);
+  margin-top: 0.2rem;
+}
+@media (max-width: 1600px){
+  .spotlight{ display: none; } /* no room beside the content on narrower screens */
+}
+
+.result-line{
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--paper-dim);
+  text-align: center;
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--line);
+}
+.result-line strong{ color: var(--gold); font-weight: 600; }
+.result-line.pending{ color: var(--paper-dim); font-style: italic; }
+
+/* star rating widget — a static star readout, filled in by
+   two dropdowns below it: whole stars, then quarters */
+.rate-row{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+}
+.star-display{
+  position: relative;
+  display: inline-block;
+  font-size: 1.4rem;
+  line-height: 1;
+  letter-spacing: 3px;
+}
+.star-back{ color: var(--line-strong); }
+.star-front{
+  position: absolute;
+  top: 0; left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--gold);
+  transition: width 0.12s ease;
+  pointer-events: none;
+}
+.rate-select-row{
+  display: flex;
+  gap: 0.5rem;
+}
+.rate-select{
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: var(--sumi-raised);
+  color: var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+}
+.rate-select:hover{ border-color: var(--gold); }
+.rate-select:focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
+.rate-avg{
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--paper-dim);
+}
+.rate-reset{
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  padding: 0;
+  margin-top: -0.1rem;
+}
+.rate-reset:hover{ color: var(--vermillion); }
+
+/* ============================================
+   STANDINGS
+   ============================================ */
+.standings-wrap{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+@media (max-width: 700px){ .standings-wrap{ grid-template-columns: 1fr; } }
+
+.block-title{
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--line);
+}
+.block-title.block-a{ border-bottom-color: var(--vermillion); color: #ff6b9a; }
+.block-title.block-b{ border-bottom-color: var(--cyan); color: #7fe3f5; }
+
+.block-table table{ width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.82rem; }
+.block-table th{
+  text-align: center;
+  color: var(--paper-dim);
+  font-weight: 500;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.3rem;
+  border-bottom: 1px solid var(--line);
+}
+.block-table th.col-name{ text-align: left; }
+.block-table td{ text-align: center; padding: 0.5rem 0.3rem; border-bottom: 1px solid var(--line); }
+.block-table td.col-name{ text-align: left; font-family: var(--font-body); font-weight: 600; }
+.block-table tr:first-child td{ background: rgba(201,162,39,0.08); }
+.block-table td.pts{ color: var(--gold); font-weight: 700; }
+.rank-num{ display:inline-block; width:1.4em; color: var(--paper-dim); }
+
+.c-block{
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--line);
+}
+.c-block-title{
+  border-bottom-color: var(--flash);
+  color: var(--flash);
+}
+.c-block-sub{
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--paper-dim);
+  font-weight: 400;
+}
+.c-block table{ width: 100%; max-width: 420px; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.82rem; }
+.c-block th{
+  text-align: left;
+  color: var(--paper-dim);
+  font-weight: 500;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.3rem;
+  border-bottom: 1px solid var(--line);
+}
+.c-block th:last-child{ text-align: right; }
+.c-block td{ padding: 0.5rem 0.3rem; border-bottom: 1px solid var(--line); }
+.c-block td.pts{ text-align: right; color: var(--flash); font-weight: 700; }
+.c-block td.empty-state{ text-align: center; padding: 1.5rem 0; }
+
+/* ============================================
+   TOP RATED
+   ============================================ */
+.stars-intro{ color: var(--paper-dim); font-size: 0.85rem; max-width: 46ch; margin-bottom: 1.25rem; }
+.stars-wrap{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.stars-heading{
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
+  color: var(--paper-dim);
+  margin: 0 0 0.7rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--line);
+}
+.stars-heading-a{ border-bottom-color: var(--vermillion); color: #ff6b9a; }
+.stars-heading-b{ border-bottom-color: var(--cyan); color: #7fe3f5; }
+.star-leaderboard{ display: flex; flex-direction: column; gap: 0.6rem; }
+.leader-row{
+  display: flex; align-items: center; gap: 0.8rem;
+  background: var(--sumi-raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+}
+.leader-rank{ font-family: var(--font-display); font-size: 1.3rem; color: var(--paper-dim); width: 1.6em; }
+.leader-bout{ flex: 1; font-weight: 600; font-size: 0.9rem; }
+.leader-meta{ font-family: var(--font-mono); font-size: 0.65rem; color: var(--paper-dim); }
+.leader-avg{ font-family: var(--font-mono); color: var(--gold); font-weight: 700; }
+.empty-state{ color: var(--paper-dim); font-family: var(--font-mono); font-size: 0.82rem; padding: 2rem 0; text-align: center; }
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.site-footer{
+  border-top: 1px solid var(--line);
+  padding: 1.5rem;
+  text-align: center;
+}
+.site-footer p{ font-family: var(--font-mono); font-size: 0.68rem; color: var(--paper-dim); max-width: 50ch; margin: 0 auto; }
+
+@media (prefers-reduced-motion: reduce){
+  .star-front{ transition: none; }
+}
