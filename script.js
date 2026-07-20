@@ -262,6 +262,16 @@ const BLOCK_B = ["Zack Sabre Jr","Shota Umino","Yuya Uemura","Callum Newman","Aa
    again; nothing else needs to change. */
 const OUT_WRESTLERS = ["Shota Umino"];
 
+/* ============================================
+   C BLOCK — just for fun, no points.
+   A running win counter for undercard tag matches
+   (not the tournament itself). Add one line per win,
+   whenever someone notable picks one up.
+   ============================================ */
+const C_BLOCK_WINS = [
+  { name: "Hartley Jackson", night: "N2 \u00b7 Jul 18" },
+];
+
 /* Generates a simple original avatar for each wrestler: a silhouette
    bust with their initials, colored by block. No external image files,
    no real photos — just an abstract graphic in the site's own palette. */
@@ -639,6 +649,34 @@ function renderStandingsTable(block, tbodySelector){
   });
 }
 
+function renderCBlock(){
+  const tbody = document.getElementById("cBlockBody");
+  if(!tbody) return;
+  tbody.innerHTML = "";
+
+  const tally = {};
+  C_BLOCK_WINS.forEach(({ name }) => {
+    tally[name] = (tally[name] || 0) + 1;
+  });
+
+  const entries = Object.entries(tally)
+    .map(([name, wins]) => ({ name, wins }))
+    .sort((x, y) => y.wins - x.wins);
+
+  if(!entries.length){
+    tbody.innerHTML = `<tr><td colspan="2" class="empty-state">No undercard wins logged yet.</td></tr>`;
+    return;
+  }
+  entries.forEach((e, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="col-name"><span class="rank-num">${i+1}</span>${e.name}</td>
+      <td class="pts">${e.wins}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
 function renderStars(){
   const wrap = document.getElementById("starLeaderboard");
   if(!wrap) return; // COMMUNITY board is currently hidden from the page
@@ -755,6 +793,7 @@ function render(){
   renderCards();
   renderStandingsTable("A", "#blockA");
   renderStandingsTable("B", "#blockB");
+  renderCBlock();
   renderStars();
   renderMyStars();
   renderWrestlerRanking("A", "wrestlerA");
