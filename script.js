@@ -57,11 +57,11 @@ const NIGHTS = [
     label: "N4 · Jul 21",
     venue: "Sendai, Miyagi",
     matches: [
-      { block: "A", a: "Konosuke Takeshita", b: "Yuto-Ice",      winner: null },
-      { block: "A", a: "Hirooki Goto",       b: "Jake Lee",       winner: null },
-      { block: "A", a: "Boltin Oleg",        b: "Shingo Takagi",  winner: null },
-      { block: "A", a: "Yota Tsuji",         b: "SANADA",         winner: null },
-      { block: "A", a: "Great-O-Khan",       b: "Ryohei Oiwa",    winner: null },
+      { block: "A", a: "Hirooki Goto",       b: "Jake Lee",       winner: "Jake Lee",           method: "FBS",                                    time: "09:55" },
+      { block: "A", a: "Great-O-Khan",       b: "Ryohei Oiwa",    winner: "Ryohei Oiwa",        method: "Roy Clutch",                             time: "13:27" },
+      { block: "A", a: "Konosuke Takeshita", b: "Yuto-Ice",       winner: "Konosuke Takeshita", method: "Referee Stoppage (Chickenwing sleeper)", time: "12:04" },
+      { block: "A", a: "Yota Tsuji",         b: "SANADA",         winner: "SANADA",             method: "Deadfall",                               time: "15:23" },
+      { block: "A", a: "Boltin Oleg",        b: "Shingo Takagi",  winner: "Boltin Oleg",        method: "Kamikaze",                               time: "19:10" },
     ]
   },
   {
@@ -271,7 +271,9 @@ const OUT_WRESTLERS = ["Shota Umino"];
 const C_BLOCK_WINS = [
   { name: "Hartley Jackson", night: "N2 \u00b7 Jul 18" },
   { name: "Hartley Jackson", night: "N3 \u00b7 Jul 19" },
-  { name: "Taiji Ishimori", night: "N3 \u00b7 Jul 19" }
+  { name: "Taiji Ishimori", night: "N3 \u00b7 Jul 19" },
+   { name: "Hartley Jackson", night: "N4 \u00b7 Jul 21" },
+   { name: "Jacob Austin Young", night: "N4 \u00b7 Jul 21" }
 ];
 
 /* Generates a simple original avatar for each wrestler: a silhouette
