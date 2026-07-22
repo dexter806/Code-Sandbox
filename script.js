@@ -74,7 +74,7 @@ const NIGHTS = [
       { block: "B", a: "Aaron Wolf",      b: "Gabe Kidd",       winner: "Gabe Kidd",      method:"Drill A Hole Piledriver",  time:"9:51"   },
       { block: "B", a: "HENARE",          b: "OSKAR",           winner: "HENARE",         method:"Henare Bomb",              time:"11:46"  }, 
       { block: "B", a: "Yuya Uemura",     b: "Drilla Moloney",  winner: "Drilla Moloney", method:"Drilla Killa",             time:"17:48"  },
-      { block: "B", a: "Zack Sabre Jr",   b: "Callum Newman",   winner: "Callum Newman".  method:" ",                        time:"20:11"  },
+      { block: "B", a: "Zack Sabre Jr",   b: "Callum Newman",   winner: "Callum Newman".  method:"Rollup",                   time:"20:11"  },
       
       
     ]
